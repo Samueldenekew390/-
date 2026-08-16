@@ -1,0 +1,22 @@
+{
+  "name": "የኢትዮጲያ ሎተሪ እጣ",
+  "short_name": "ሎተሪ እጣ",
+  "description": "የኢትዮጲያ ሎተሪ እጣ - የዘመን መለወጫ ልዩ አጓጊ ሽልማቶች ዲጂታል መድረክ",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0A0A0A",
+  "theme_color": "#0A0A0A",
+  "icons": [
+    {
+      "src": "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=192&q=80",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=512&q=80",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

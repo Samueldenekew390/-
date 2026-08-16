@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "routes": [
+    { "src": "/admin-login", "dest": "/admin-login.html" },
+    { "src": "/admin-login.html", "dest": "/admin-login.html" },
+    { "src": "/admin", "dest": "/admin.html" },
+    { "src": "/admin.html", "dest": "/admin.html" },
+    { "src": "/admin-images", "dest": "/admin.html" },
+    { "src": "/admin/images", "dest": "/admin.html" },
+    { "src": "/category", "dest": "/category.html" },
+    { "src": "/category.html", "dest": "/category.html" },
+    { "src": "/payment", "dest": "/payment.html" },
+    { "src": "/payment.html", "dest": "/payment.html" },
+    { "src": "/success", "dest": "/success.html" },
+    { "src": "/success.html", "dest": "/success.html" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}

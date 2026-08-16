@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="am">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>የኢትዮጲያ ሎተሪ እጣ - በኢትዮጲያ ትልቁ ዲጂታል የሎተሪ መድረክ</title>
+    <meta
+      name="description"
+      content="የኢትዮጲያ ሎተሪ እጣ - በአዲስ አመት የቤት፣ የመኪና፣ የዘመናዊ ስልክ፣ የገንዘብ እና ሌሎች አጓጊ ሽልማቶች አሸናፊ ይሁኑ!"
+    />
+
+    <!-- Open Graph / Meta -->
+    <meta property="og:title" content="የኢትዮጲያ ሎተሪ እጣ" />
+    <meta
+      property="og:description"
+      content="በአዲስ አመት የቤት ወይንም የመኪና ወይንም ደግሞ የዘመናዊ ስልክ ቀፎና ሌሎችም ሽልማቶች አሸናፊ ይሁኑ!"
+    />
+    <meta property="og:type" content="website" />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#0A0A0A" />
+  </head>
+  <body>
+    <!-- SITE HEADER -->
+    <header class="site-header">
+      <div class="container navbar">
+        <!-- Logo Branding Area -->
+        <a
+          href="index.html"
+          class="brand-logo-container"
+          id="header-brand-logo"
+        >
+          <img
+            src="/assets/official_logo.jpg"
+            alt="የኢትዮጲያ ሎተሪ እጣ"
+            class="brand-logo-img"
+          />
+          <span class="brand-title">የኢትዮጲያ ሎተሪ እጣ</span>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link active">መነሻ</a></li>
+          <li><a href="category.html?category=car" class="nav-link">መኪና</a></li>
+          <li>
+            <a href="category.html?category=condo" class="nav-link">ኮንደሚኒዬም</a>
+          </li>
+          <li>
+            <a href="category.html?category=phone" class="nav-link"
+              >ዘመናዊ ስልኮች</a
+            >
+          </li>
+          <li>
+            <a href="category.html?category=money" class="nav-link">ገንዘብ</a>
+          </li>
+          <li>
+            <a href="category.html?category=laptop" class="nav-link">ላፕቶፕ</a>
+          </li>
+          <li>
+            <a href="category.html?category=tv" class="nav-link">ቴሌቪዥን</a>
+          </li>
+          <li>
+            <a href="category.html?category=sheep" class="nav-link">በግ</a>
+          </li>
+          <li>
+            <a
+              href="admin-login.html"
+              class="nav-link"
+              id="admin-nav-login-link"
+              style="
+                color: var(--primary);
+                font-weight: 800;
+                border: 1px solid var(--primary);
+                padding: 0.4rem 0.8rem;
+                border-radius: 6px;
+                background: rgba(212, 175, 55, 0.1);
+              "
+              >⚙️ አስተዳዳሪ መግቢያ</a
+            >
+          </li>
+        </ul>
+
+        <!-- Mobile Navigation Hamburger Toggle -->
+        <button class="mobile-toggle" id="mobile-nav-toggle" aria-label="ሜኑ">
+          ☰
+        </button>
+      </div>
+    </header>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay">
+      <div class="mobile-nav-drawer">
+        <div class="mobile-nav-header">
+          <div class="brand-logo-container">
+            <span class="brand-title">የኢትዮጲያ ሎተሪ እጣ</span>
+          </div>
+          <button
+            id="mobile-nav-close"
+            style="font-size: 1.5rem; color: var(--text)"
+          >
+            ✕
+          </button>
+        </div>
+        <ul class="mobile-nav-list">
+          <li><a href="index.html" class="nav-link active">መነሻ</a></li>
+          <li>
+            <a href="category.html?category=car" class="nav-link">🚗 መኪና</a>
+          </li>
+          <li>
+            <a href="category.html?category=condo" class="nav-link"
+              >🏠 ኮንደሚኒዬም</a
+            >
+          </li>
+          <li>
+            <a href="category.html?category=phone" class="nav-link"
+              >📱 ዘመናዊ ስልኮች</a
+            >
+          </li>
+          <li>
+            <a href="category.html?category=money" class="nav-link">💰 ገንዘብ</a>
+          </li>
+          <li>
+            <a href="category.html?category=laptop" class="nav-link">💻 ላፕቶፕ</a>
+          </li>
+          <li>
+            <a href="category.html?category=tv" class="nav-link">📺 ቴሌቪዥን</a>
+          </li>
+          <li>
+            <a href="category.html?category=sheep" class="nav-link">🐑 በግ</a>
+          </li>
+          <li
+            style="
+              margin-top: 1.5rem;
+              border-top: 1px solid var(--border);
+              padding-top: 1rem;
+            "
+          >
+            <a
+              href="admin-login.html"
+              class="nav-link"
+              style="color: var(--primary)"
+              >⚙️ የአድሚን መግቢያ</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <div class="container hero-content">
+        <span class="gold-badge" style="margin-bottom: 1.25rem"
+          >✨ የ 2019 አዲስ አመት ልዩ የሎተሪ እጣ</span
+        >
+
+        <h1 class="hero-title" id="hero-title">
+          በአዲስ አመት የቤት ወይንም የመኪና ወይንም ደግሞ የዘመናዊ ስልክ ቀፎና ሌሎችም ሽልማቶች አሸናፊ ይሁኑ!
+        </h1>
+
+        <p class="hero-subtitle">
+          በአስተማማኝ እና ፈጣን በሆነው የኢትዮጲያ ሎተሪ እጣ ዲጂታል መድረክ እድልዎን ይሞክሩ።
+        </p>
+
+        <a
+          href="#categories-section"
+          class="btn-primary"
+          id="hero-cta-btn"
+          style="font-size: 1.15rem; padding: 1rem 2.5rem"
+        >
+          እድልዎን ይሞክሩ 🎯
+        </a>
+
+        <!-- HERO BANNER CAROUSEL -->
+        <div
+          id="hero-banner-container"
+          style="
+            margin-top: 2.25rem;
+            width: 100%;
+            max-width: 850px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border-gold);
+            box-shadow: var(--shadow-card);
+          "
+        ></div>
+
+        <!-- Quick Trust Stats -->
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-value">7+</span>
+            <span class="stat-label">የሽልማት ምድቦች</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">35+</span>
+            <span class="stat-label">አጓጊ የሎተሪ እጣዎች</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">100%</span>
+            <span class="stat-label">ግልጽ እና ታማኝ</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOMEPAGE FEATURED IMAGES CAROUSEL / GALLERY SECTION -->
+    <section
+      id="homepage-featured-images-section"
+      style="
+        padding: 2.5rem 0;
+        background: var(--surface-card);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      "
+    >
+      <div class="container">
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+          "
+        >
+          <div>
+            <span
+              class="gold-badge"
+              style="margin-bottom: 0.4rem; display: inline-block"
+              >🖼️ የመነሻ ገፅ ምስሎች</span
+            >
+            <h3
+              style="font-size: 1.35rem; font-weight: 800; color: var(--text)"
+            >
+              የቅርብ ጊዜ አጓጊ የሎተሪ ምስሎች
+            </h3>
+          </div>
+        </div>
+
+        <div
+          id="homepage-images-gallery-container"
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+          "
+        >
+          <!-- Rendered dynamically by home.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES SECTION -->
+    <section class="category-section" id="categories-section">
+      <div class="container">
+        <div class="section-title-wrap">
+          <span class="section-tag">የሽልማት ምድቦች</span>
+          <h2 class="section-title">የሚፈልጉትን የሎተሪ ምድብ ይምረጡ</h2>
+          <p class="section-subtitle">እያንዳንዱ ምድብ 5 አጓጊ የሎተሪ እጣ ምስሎችን ይዟል</p>
+        </div>
+
+        <!-- 7 Category Grid Loaded Dynamically -->
+        <div class="category-grid" id="category-grid-container">
+          <!-- Skeleton loaders while fetching -->
+          <div class="category-card skeleton" style="height: 380px"></div>
+          <div class="category-card skeleton" style="height: 380px"></div>
+          <div class="category-card skeleton" style="height: 380px"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRUST & SAFETY DISCLAIMER BANNER -->
+    <section class="trust-banner">
+      <div class="container">
+        <p class="trust-quote" id="bottom-disclaimer-text">
+          በኢትዮጲያ ሎተሪ እጣ ድረ-ገፅ እና አፕልኬሽን ሎተሪ በመቁረጥ እድሎን ይሞክሩ እራስዎን ከአጭበርባሪዎች
+          ይታደጉ!
+        </p>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="brand-logo-container">
+              <span class="brand-title">የኢትዮጲያ ሎተሪ እጣ</span>
+            </div>
+            <p class="footer-desc">
+              የኢትዮጲያ ሎተሪ እጣ - በአዲስ አመት የቤት፣ የመኪና፣ የዘመናዊ ስልክ፣ የገንዘብ እና ሌሎች አጓጊ
+              ሽልማቶች አሸናፊ ይሁኑ!
+            </p>
+          </div>
+
+          <div>
+            <h4 class="footer-col-title">የሽልማት ምድቦች</h4>
+            <ul class="footer-links">
+              <li>
+                <a href="category.html?category=car" class="footer-link">መኪና</a>
+              </li>
+              <li>
+                <a href="category.html?category=condo" class="footer-link"
+                  >ኮንደሚኒዬም</a
+                >
+              </li>
+              <li>
+                <a href="category.html?category=phone" class="footer-link"
+                  >ዘመናዊ ስልኮች</a
+                >
+              </li>
+              <li>
+                <a href="category.html?category=money" class="footer-link"
+                  >ገንዘብ</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-col-title">ተጨማሪ ምድቦች</h4>
+            <ul class="footer-links">
+              <li>
+                <a href="category.html?category=laptop" class="footer-link"
+                  >ላፕቶፕ</a
+                >
+              </li>
+              <li>
+                <a href="category.html?category=tv" class="footer-link"
+                  >ቴሌቪዥን</a
+                >
+              </li>
+              <li>
+                <a href="category.html?category=sheep" class="footer-link"
+                  >በግ</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-col-title">መረጃዎች</h4>
+            <ul class="footer-links">
+              <li>
+                <span class="footer-link" id="footer-operator-info"
+                  >የኢትዮጲያ ሎተሪ እጣ ዲጂታል ድረገጽ</span
+                >
+              </li>
+              <li>
+                <a
+                  href="admin-login.html"
+                  class="footer-link"
+                  style="color: var(--primary)"
+                  >የአድሚን ገፅ</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <span id="footer-legal-info"
+            >መብቱ በህግ የተጠበቀ ነው። © 2026 የኢትዮጲያ ሎተሪ እጣ</span
+          >
+          <span>ዲጂታል የሎተሪ እጣ መድረክ</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- DEVELOPMENT ADMIN TEST ACCESS BUTTON -->
+    <a
+      href="admin-login.html"
+      id="admin-floating-test-btn"
+      style="
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 99999;
+        background: #d4af37;
+        color: #0a0a0a;
+        padding: 0.75rem 1.4rem;
+        border-radius: 50px;
+        font-weight: 800;
+        font-size: 1rem;
+        box-shadow: 0 6px 24px rgba(212, 175, 55, 0.5);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 2px solid #ffffff;
+        cursor: pointer;
+      "
+    >
+      ⚙️ አስተዳዳሪ መግቢያ
+    </a>
+
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- JavaScript Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/home.js"></script>
+  </body>
+</html>

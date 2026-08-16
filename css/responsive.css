@@ -1,0 +1,126 @@
+/* ==========================================================================
+   የኢትዮጲያ ሎተሪ እጣ - Responsive Design Styles
+   ========================================================================== */
+
+/* Large Screens & Desktops (1280px and up) */
+@media (min-width: 1280px) {
+  .hero-title {
+    font-size: 3.2rem;
+  }
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Tablets & Laptops (992px to 1279px) */
+@media (max-width: 1279px) and (min-width: 992px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .footer-grid {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+}
+
+/* Tablets (768px to 991px) */
+@media (max-width: 991px) {
+  .nav-links {
+    display: none;
+  }
+  .mobile-toggle {
+    display: block;
+  }
+  .hero-title {
+    font-size: 2.2rem;
+  }
+  .hero-subtitle {
+    font-size: 1.05rem;
+  }
+  .hero-stats {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .trust-quote {
+    font-size: 1.2rem;
+    padding: 0 1rem;
+  }
+}
+
+/* Mobile Screens (up to 767px) */
+@media (max-width: 767px) {
+  .navbar {
+    height: 70px;
+  }
+  .brand-logo-img {
+    height: 42px;
+  }
+  .brand-title {
+    font-size: 1.1rem;
+  }
+  .hero-section {
+    padding: 2.5rem 0;
+  }
+  .hero-title {
+    font-size: 1.65rem;
+    line-height: 1.35;
+  }
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+  .category-card {
+    border-radius: var(--radius-md);
+  }
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  /* Form & Payment Mobile Adjustments */
+  .payment-card {
+    padding: 1.25rem !important;
+  }
+  .bank-item {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+  .bank-number-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  /* Toast Notification on Mobile */
+  .toast-container {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+  }
+  .toast {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Small Mobile Screens (320px to 380px) */
+@media (max-width: 380px) {
+  .brand-title {
+    font-size: 0.95rem;
+  }
+  .btn-primary, .btn-secondary {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+  .hero-title {
+    font-size: 1.45rem;
+  }
+}

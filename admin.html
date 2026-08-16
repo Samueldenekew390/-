@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>የአድሚን ዳሽቦርድ - የኢትዮጲያ ሎተሪ እጣ</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+  <div class="admin-layout">
+    
+    <!-- ADMIN SIDEBAR -->
+    <aside class="admin-sidebar" id="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <div class="brand-logo-container">
+          <img src="/assets/official_logo.jpg" alt="የኢትዮጲያ ሎተሪ እጣ" class="brand-logo-img" style="height: 42px; width: auto; object-fit: contain; border-radius: 6px;" />
+          <span class="brand-title" style="font-size: 1.1rem;">የኢትዮጲያ ሎተሪ እጣ</span>
+        </div>
+      </div>
+
+      <nav class="admin-sidebar-nav">
+        <a href="#submissions" class="admin-nav-item active" data-tab="submissions">
+          📋 የደንበኞች ቲኬቶች
+        </a>
+        <a href="#images" class="admin-nav-item" data-tab="images" id="admin-nav-images-btn">
+          🖼️ ምስሎች
+        </a>
+        <a href="#category-prices" class="admin-nav-item" data-tab="category-prices">
+          💰 የቲኬት / የምድብ ዋጋዎች (Category Prices)
+        </a>
+        <a href="#categories" class="admin-nav-item" data-tab="categories">
+          🏷️ የምድቦች አስተዳደር
+        </a>
+        <a href="#prizes" class="admin-nav-item" data-tab="prizes">
+          🎁 የእጣዎች አስተዳደር
+        </a>
+        <a href="#payments" class="admin-nav-item" data-tab="payments">
+          🏦 የባንክ አካውንቶች
+        </a>
+        <a href="#settings" class="admin-nav-item" data-tab="settings">
+          ⚙️ ብራንዲንግና ሴቲንግ
+        </a>
+      </nav>
+
+      <div style="padding: 1.5rem; border-top: 1px solid var(--border);">
+        <button id="admin-logout-btn" class="btn-secondary" style="width: 100%; justify-content: center; color: var(--accent-red); border-color: var(--accent-red); font-weight:700;">
+          ውጣ 🚪
+        </button>
+      </div>
+    </aside>
+
+    <!-- MOBILE SIDEBAR BACKDROP -->
+    <div class="admin-sidebar-backdrop" id="admin-sidebar-backdrop"></div>
+
+    <!-- ADMIN MAIN CONTENT AREA -->
+    <main class="admin-main">
+      
+      <!-- TOP BAR -->
+      <div class="admin-topbar">
+        <div style="display:flex; align-items:center; gap:1rem;">
+          <button type="button" id="admin-mobile-toggle" class="btn-secondary" style="display:none; padding:0.45rem 0.8rem; font-size:1.25rem; cursor:pointer;" aria-label="Toggle Navigation">
+            ☰
+          </button>
+          <div>
+            <h1 class="admin-page-title">የአድሚን አስተዳደር ዳሽቦርድ</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">የሎተሪ ቲኬቶችን፣ ምድቦችን፣ አካውንቶችንና ይዘቶችን ያስተዳድሩ</p>
+          </div>
+        </div>
+        <a href="index.html" target="_blank" class="btn-secondary" style="font-size:0.85rem;">
+          🌐 ሳይቱን ይመልከቱ
+        </a>
+      </div>
+
+      <!-- KEY STATS COUNTERS -->
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card">
+          <span class="admin-stat-title">ጠቅላላ የቲኬት ጥያቄዎች</span>
+          <span class="admin-stat-number gold" id="stat-total-submissions">0</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-title">በመጠባበቅ ላይ (Pending)</span>
+          <span class="admin-stat-number" id="stat-pending-submissions">0</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-title">እየተመረመረ ነው</span>
+          <span class="admin-stat-number" id="stat-reviewing-submissions">0</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-title">የተፈቀዱ (Approved)</span>
+          <span class="admin-stat-number green" id="stat-approved-submissions">0</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-title">ውድቅ የተደረጉ (Rejected)</span>
+          <span class="admin-stat-number red" id="stat-rejected-submissions">0</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-title">የዛሬ ጥያቄዎች</span>
+          <span class="admin-stat-number gold" id="stat-today-submissions">0</span>
+        </div>
+      </div>
+
+      <!-- TAB 1: CUSTOMER SUBMISSIONS -->
+      <div class="admin-tab-content" id="tab-content-submissions">
+        <div class="admin-card">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 1.5rem; flex-wrap:wrap; gap:1rem;">
+            <h3 style="font-size:1.25rem; font-weight:800;">የደንበኞች ክፍያና ቲኬት ጥያቄዎች</h3>
+
+            <!-- Search & Filters -->
+            <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+              <input type="text" id="search-phone-input" class="form-control" placeholder="በስልክ ቁጥር ፈልግ..." style="width:200px; padding:0.5rem 0.85rem; font-size:0.85rem;" />
+              <select id="filter-status-select" class="form-control" style="width:160px; padding:0.5rem 0.85rem; font-size:0.85rem;">
+                <option value="all">ሁሉንም አሳይ</option>
+                <option value="pending">በመጠባበቅ ላይ</option>
+                <option value="reviewing">እየተመረመረ ነው</option>
+                <option value="approved">ተፈቅዷል</option>
+                <option value="rejected">ውድቅ ተደርጓል</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>መለያ #</th>
+                  <th>ስልክ ቁጥር</th>
+                  <th>ቀንና ሰዓት</th>
+                  <th>የክፍያ ደረሰኝ</th>
+                  <th>ሁኔታ</th>
+                  <th>ሁኔታ ቀይር</th>
+                </tr>
+              </thead>
+              <tbody id="submissions-table-body">
+                <!-- Dynamic Submission Rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: CATEGORIES MANAGEMENT -->
+      <div class="admin-tab-content" id="tab-content-categories" style="display:none;">
+        <div class="admin-card">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 1.5rem;">
+            <h3 style="font-size:1.25rem; font-weight:800;">የምድቦች ዝርዝር</h3>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>አይኮን</th>
+                  <th>የምድብ ስም</th>
+                  <th>Slug</th>
+                  <th>ተራ ቁጥር</th>
+                  <th>ሁኔታ</th>
+                  <th>ተግባር</th>
+                </tr>
+              </thead>
+              <tbody id="categories-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: PRIZES MANAGEMENT -->
+      <div class="admin-tab-content" id="tab-content-prizes" style="display:none;">
+        <div class="admin-card">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 1.25rem; flex-wrap:wrap; gap:1rem;">
+            <div>
+              <h3 style="font-size:1.25rem; font-weight:800;">የሎተሪ እጣዎች፣ የእጣ ዋጋ እና ImgBB ምስሎች ማስተዳደሪያ</h3>
+              <p style="font-size:0.85rem; color:var(--text-muted);">እጣዎችን፣ የእጣ ዋጋዎችን እና የ ImgBB ምስሎችን እዚህ ያስገቡና ያስተዳድሩ</p>
+            </div>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <button id="add-prize-btn" class="btn-primary" style="font-size:0.85rem; padding:0.5rem 1rem;">
+                ➕ አዲስ እጣ ጨምር
+              </button>
+              <button id="batch-price-btn" class="btn-secondary" style="font-size:0.85rem; padding:0.5rem 1rem;">
+                💰 የሁሉም እጣ ዋጋ በጅምላ ቀይር
+              </button>
+            </div>
+          </div>
+
+          <!-- INFO GUIDANCE BANNER -->
+          <div style="background: rgba(212, 175, 55, 0.08); border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; font-size: 0.85rem; line-height: 1.5; color: var(--text-main);">
+            <div style="font-weight:700; color:var(--primary); margin-bottom:0.3rem; display:flex; align-items:center; gap:0.4rem;">
+              <span>💡 የ ImgBB ምስሎች እና የእጣ ዋጋ መመሪያ:</span>
+            </div>
+            <ul style="margin:0; padding-left:1.2rem; display:flex; flex-direction:column; gap:0.25rem;">
+              <li><strong>🖼️ ImgBB ምስል ማስገባት:</strong> ImgBB.com ላይ የተጫኑ የፋይል ሊንኮችን (ምሳሌ: <code style="color:var(--primary);">https://i.ibb.co/xyz/image.jpg</code>) ወይም ከኮምፒውተር/ስልክዎ ምስል መርጠው በራሱ ወደ ImgBB በመጫን ማስገባት ይችላሉ። ምስሎቹ በዋናው ገፅ (Home Page) ካሩሰል ላይ በቅጽበት ይታያሉ!</li>
+              <li><strong>💰 የእጣ ዋጋ ማስገባት:</strong> ለእያንዳንዱ እጣ የቲኬት ዋጋ (ምሳሌ፡ <strong>50 ብር</strong>, <strong>100 ብር</strong>, <strong>200 ብር</strong>) ማስገባት ይችላሉ።</li>
+            </ul>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>የእጣ ርዕስ</th>
+                  <th>ምድብ</th>
+                  <th>የእጣ ዋጋ (Ticket Price)</th>
+                  <th>ImgBB ምስሎች</th>
+                  <th>ተግባር</th>
+                </tr>
+              </thead>
+              <tbody id="prizes-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: PAYMENT METHODS -->
+      <div class="admin-tab-content" id="tab-content-payments" style="display:none;">
+        <div class="admin-card">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 1.5rem; flex-wrap:wrap; gap:1rem;">
+            <div>
+              <h3 style="font-size:1.25rem; font-weight:800;">የባንክ አካውንቶች (Payment Bank Accounts)</h3>
+              <p style="font-size:0.85rem; color:var(--text-muted);">የባንክ እና ቴሌብር አካውንት ቁጥሮችን እዚህ ያስተዳድሩ</p>
+            </div>
+            <div>
+              <button id="add-payment-method-btn" class="btn-primary" style="font-size:0.85rem; padding:0.5rem 1rem;">
+                ➕ አዲስ የባንክ አካውንት ጨምር
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>የባንክ/አገልግሎት ስም</th>
+                  <th>የአካውንት ቁጥር</th>
+                  <th>ሁኔታ</th>
+                  <th>ተግባር</th>
+                </tr>
+              </thead>
+              <tbody id="payment-methods-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: WEBSITE IMAGE MANAGEMENT (HOMEPAGE, CATEGORY 35 SLOTS, PRIZE 175 SLOTS) -->
+      <div class="admin-tab-content" id="tab-content-images" style="display:none;">
+        
+        <!-- MAIN HEADER CARD -->
+        <div class="admin-card" style="margin-bottom: 1.75rem; border: 2px solid var(--border-gold);">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
+            <div>
+              <h1 style="font-size:1.6rem; font-weight:800; color:var(--primary); margin:0 0 0.4rem 0;">🖼️ የምስሎች ማስተዳደሪያ (Image Management)</h1>
+              <p style="font-size:0.9rem; color:var(--text-muted); margin:0; max-width:850px;">
+                እያንዳንዱ የሳይቱ ምስል (5ቱ የመነሻ ገፅ ባነሮች፣ 35ቱ የምድብ ስላይደሮች፣ እና 175ቱ የእጣ ምስሎች) የራሱ ግልጽ መለያ ቦታ (Location Path) አለው። ምስሉን ከስልክ ወይም ከኮምፒውተርዎ በቀጥታ መርጠው መቀየር ይችላሉ።
+              </p>
+            </div>
+
+            <!-- Quick Search -->
+            <div style="min-width:260px;">
+              <input type="text" id="managed-images-search-input" class="form-control" placeholder="🔍 በስም ወይም በቦታ ፈልግ (Search)..." style="font-size:0.85rem; padding:0.55rem 0.9rem;" />
+            </div>
+          </div>
+
+          <!-- ISOLATION NOTICE: LOGO & PRIVATE SCREENSHOTS -->
+          <div style="background:rgba(217, 119, 6, 0.12); border:1px solid var(--border-gold); border-radius:var(--radius-sm); padding:0.85rem 1.1rem; margin-top:1.1rem; display:flex; align-items:center; gap:0.85rem;">
+            <span style="font-size:1.4rem;">⚠️</span>
+            <div style="font-size:0.85rem; color:var(--text); line-height:1.45;">
+              <strong>ማሳሰቢያ፡</strong> <strong>የሳይቱ ሎጎ በዚህ ክፍል አይቀየርም።</strong> የድረ-ገፅ ሎጎ በ <a href="#settings" style="color:var(--primary); font-weight:700; text-decoration:underline;" onclick="AdminDashboard.switchTab('settings')">⚙️ ብራንዲንግና ሴቲንግ</a> ክፍል ውስጥ ይገኛል። የደንበኞች የክፍያ ደረሰኞችም በ Supabase Private Storage የተጠበቁ ናቸው።
+            </div>
+          </div>
+
+          <!-- MAIN 4 SUBSECTION TABS -->
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:1.25rem; border-bottom:2px solid var(--border); padding-bottom:0.75rem;" id="images-subtabs">
+            <button type="button" class="btn-secondary img-subtab-btn active" data-subtab="homepage" style="font-size:0.9rem; padding:0.55rem 1.25rem; font-weight:700;">
+              🖼️ A. የመነሻ ገፅ ምስሎች (5 Banners)
+            </button>
+            <button type="button" class="btn-secondary img-subtab-btn" data-subtab="category" style="font-size:0.9rem; padding:0.55rem 1.25rem; font-weight:700;">
+              📂 B. የምድብ ምስሎች (35 Slots)
+            </button>
+            <button type="button" class="btn-secondary img-subtab-btn" data-subtab="prize" style="font-size:0.9rem; padding:0.55rem 1.25rem; font-weight:700;">
+              🎁 C. የሽልማት ምስሎች (175 Slots)
+            </button>
+            <button type="button" class="btn-secondary img-subtab-btn" data-subtab="all" style="font-size:0.9rem; padding:0.55rem 1.25rem; font-weight:700;">
+              🌐 D. ሁሉንም 210+ ምስሎች (All Grid & Filters)
+            </button>
+          </div>
+        </div>
+
+        <!-- ================= SUBSECTION A: የመነሻ ገፅ ምስሎች (5 BANNERS) ================= -->
+        <div id="subtab-content-homepage" class="img-subtab-content">
+          <div class="admin-card" style="margin-bottom:1.5rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.75rem;">
+              <div>
+                <h3 style="font-size:1.2rem; font-weight:800; color:var(--text); margin:0 0 0.35rem 0;">🖼️ የመነሻ ገፅ ባነሮችና ስላይደሮች (5 Banners)</h3>
+                <p style="font-size:0.85rem; color:var(--text-muted); margin:0;">በመነሻ ገፅ ላይ የሚታዩ 5 የጀግናና የማስተዋወቂያ ባነሮች (Banner 1 እስከ Banner 5) በቀላሉ ይጫኑና ያስተዳድሩ።</p>
+              </div>
+              <span style="font-size:0.8rem; font-weight:700; background:var(--primary); color:#000; padding:0.25rem 0.75rem; border-radius:12px;">
+                5 ባነር ቦታዎች (Slots)
+              </span>
+            </div>
+
+            <!-- Banner Slot Selector -->
+            <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:1rem; margin-bottom:1.25rem; display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:1rem; align-items:end;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-weight:700; color:var(--primary);">የባነር ቦታ ይምረጡ (Select Banner Slot):</label>
+                <select id="homepage-mgmt-slot-select" class="form-control" style="font-size:0.92rem; font-weight:700;">
+                  <option value="0">🖼️ Banner 1 (ዋና የጀግና ባነር / Hero Banner)</option>
+                  <option value="1">🖼️ Banner 2 (የማስተዋወቂያ ባነር 2)</option>
+                  <option value="2">🖼️ Banner 3 (የማስተዋወቂያ ባነር 3)</option>
+                  <option value="3">🖼️ Banner 4 (የማስተዋወቂያ ባነር 4)</option>
+                  <option value="4">🖼️ Banner 5 (የማስተዋወቂያ ባነር 5)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Dedicated Image Upload Section for Homepage Banners -->
+            <div id="homepage-slot-upload-section" style="background:var(--surface); border:2px solid var(--border-gold); border-radius:var(--radius-md); padding:1.25rem; margin-bottom:1.5rem;">
+              <!-- Header & Location Breadcrumb -->
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:1.25rem; border-bottom:1px solid var(--border); padding-bottom:0.75rem;">
+                <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+                  <span style="font-size:1.05rem; font-weight:800; color:var(--text);">🖼️ የባነር ምስል መጫኛና ማስተካከያ:</span>
+                  <span id="homepage-upload-slot-breadcrumb" style="font-size:0.9rem; font-weight:800; color:var(--primary); background:rgba(217,119,6,0.12); padding:0.25rem 0.65rem; border-radius:6px; border:1px solid var(--border-gold);">
+                    📍 መነሻ ገፅ → Banner 1 (ዋና የጀግና ባነር)
+                  </span>
+                </div>
+                <span id="homepage-upload-slot-status-badge" style="font-size:0.78rem; font-weight:700; padding:0.25rem 0.65rem; border-radius:12px; background:rgba(16,185,129,0.15); color:var(--accent-green); border:1px solid var(--accent-green);">
+                  🟢 ንቁ ባነር
+                </span>
+              </div>
+
+              <!-- Side-by-Side Live Comparison Previews (Current vs Local Preview) -->
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1.25rem; margin-bottom:1.25rem;">
+                <!-- 1. Current Image Preview (from Supabase) -->
+                <div style="background:var(--surface-card); border:1px solid var(--border); border-radius:var(--radius-md); padding:1rem; display:flex; flex-direction:column; justify-content:space-between;">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                      <label class="form-label" style="font-weight:700; font-size:0.85rem; color:var(--text); margin:0;">
+                        አሁን ያለው ባነር (Current in Supabase):
+                      </label>
+                      <span style="font-size:0.72rem; font-weight:700; color:var(--primary); background:rgba(217,119,6,0.1); padding:0.1rem 0.4rem; border-radius:4px;">Supabase Record</span>
+                    </div>
+                    <div style="width:100%; height:190px; background:#000; border-radius:var(--radius-sm); border:1px solid var(--border); overflow:hidden; display:flex; align-items:center; justify-content:center; position:relative;">
+                      <img id="homepage-upload-current-img" src="" alt="Current Banner" style="max-width:100%; max-height:100%; object-fit:contain;" />
+                      <div id="homepage-upload-current-empty" style="display:none; flex-direction:column; align-items:center; justify-content:center; color:var(--text-muted); text-align:center; padding:1rem; font-size:0.85rem; width:100%; height:100%;">
+                        <span style="font-size:2rem; margin-bottom:0.35rem;">🖼️</span>
+                        <span style="font-weight:700;">ምንም ባነር አልተጫነም</span>
+                        <span style="font-size:0.75rem; color:var(--text-dim);">(No banner uploaded yet)</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="margin-top:0.6rem;">
+                    <span style="font-size:0.72rem; color:var(--text-muted); display:block; margin-bottom:0.15rem;">የአሁኑ የምስል ሊንክ (URL):</span>
+                    <span id="homepage-upload-current-url" style="display:block; font-size:0.72rem; color:var(--text-dim); font-family:monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; background:rgba(0,0,0,0.25); padding:0.25rem 0.5rem; border-radius:4px; border:1px solid var(--border);">
+                      ምንም ሊንክ የለም
+                    </span>
+                  </div>
+                </div>
+
+                <!-- 2. Local Live Preview (Before Uploading) -->
+                <div style="background:var(--surface-card); border:2px dashed var(--border-gold); border-radius:var(--radius-md); padding:1rem; display:flex; flex-direction:column; justify-content:space-between;">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                      <label class="form-label" style="font-weight:700; font-size:0.85rem; color:var(--primary); margin:0;">
+                        አዲሱ ባነር ቅድመ እይታ (Local Live Preview):
+                      </label>
+                      <span style="font-size:0.72rem; font-weight:700; color:var(--primary);">አዲስ ፋይል</span>
+                    </div>
+                    <div style="width:100%; height:190px; background:#000; border-radius:var(--radius-sm); border:1px solid var(--border); overflow:hidden; display:flex; align-items:center; justify-content:center; position:relative;">
+                      <img id="homepage-upload-new-img" src="" alt="New Local Banner Preview" style="max-width:100%; max-height:100%; object-fit:contain; display:none;" />
+                      <div id="homepage-upload-new-empty" style="display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--text-muted); text-align:center; padding:1rem; font-size:0.85rem; width:100%; height:100%;">
+                        <span style="font-size:2rem; margin-bottom:0.35rem;">📁</span>
+                        <span style="font-weight:700;">አዲስ ፋይል ሲመርጡ ቅድመ እይታ እዚህ ይታያል</span>
+                        <span style="font-size:0.75rem; color:var(--text-dim);">(Select a file below to preview)</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="margin-top:0.6rem; min-height:1.6rem;">
+                    <span id="homepage-upload-file-meta" style="display:block; font-size:0.75rem; color:var(--primary); font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Upload & Controls Grid -->
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1rem; background:var(--surface-card); border:1px solid var(--border); border-radius:var(--radius-md); padding:1rem; margin-bottom:1rem;">
+                <!-- Option A: File Picker & Upload to ImageBB -->
+                <div>
+                  <label class="form-label" style="font-weight:700; font-size:0.85rem; color:var(--primary); margin-bottom:0.35rem;">
+                    📁 ባነር ፋይል ይምረጡና ImageBB ላይ ይጫኑ:
+                  </label>
+                  <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                    <input type="file" id="homepage-slot-file-input" accept=".jpg,.jpeg,.png,.webp" class="form-control" style="flex:1; min-width:180px; font-size:0.85rem;" />
+                    <button type="button" id="homepage-slot-upload-btn" class="btn-primary" style="padding:0.6rem 1.1rem; font-size:0.85rem; font-weight:800; white-space:nowrap;">
+                      ⬆️ Upload to ImageBB
+                    </button>
+                  </div>
+                  <div id="homepage-slot-upload-status" style="font-size:0.82rem; font-weight:700; margin-top:0.4rem; min-height:1.2rem;"></div>
+                </div>
+
+                <!-- Option B: Manual Direct Image URL -->
+                <div>
+                  <label class="form-label" style="font-weight:700; font-size:0.85rem; color:var(--primary); margin-bottom:0.35rem;">
+                    🔗 አማራጭ፡ የቀጥታ Image URL ያስገቡ:
+                  </label>
+                  <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                    <input type="url" id="homepage-slot-manual-url-input" class="form-control" placeholder="https://i.ibb.co/xxxxxx/banner.jpg" style="flex:1; min-width:180px; font-family:monospace; font-size:0.85rem;" />
+                    <button type="button" id="homepage-slot-save-url-btn" class="btn-secondary" style="padding:0.6rem 1.1rem; font-size:0.85rem; font-weight:700; white-space:nowrap;">
+                      💾 ሊንኩን አስቀምጥ (Save URL)
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Footer / Clear Slot Action -->
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; border-top:1px dashed var(--border); padding-top:0.75rem;">
+                <button type="button" id="homepage-slot-clear-btn" class="btn-secondary" style="padding:0.5rem 1rem; font-size:0.82rem; font-weight:700; color:var(--accent-red); border-color:rgba(239,68,68,0.4);">
+                  🗑️ ባነሩን ባዶ አድርግ (Clear Banner)
+                </button>
+                <span style="font-size:0.75rem; color:var(--text-muted);">
+                  የተጫነው ባነር በመነሻ ገፅ ስላይደር ላይ በቀጥታ ለደንበኞች ይታያል።
+                </span>
+              </div>
+            </div>
+
+            <!-- Dynamic Grid for 5 Homepage Images -->
+            <div id="homepage-only-images-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:1.25rem; margin-bottom:1.5rem;">
+              <!-- Dynamic Cards -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= SUBSECTION B: የምድብ ምስሎች (35 SLOTS) ================= -->
+        <div id="subtab-content-category" class="img-subtab-content" style="display:none;">
+          <div class="admin-card" style="margin-bottom:1.5rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.75rem;">
+              <div>
+                <h3 style="font-size:1.2rem; font-weight:800; color:var(--text); margin:0 0 0.35rem 0;">📂 የምድብ ምስሎች (Category Images — 35 Slots)</h3>
+                <p style="font-size:0.85rem; color:var(--text-muted); margin:0;">
+                  ለእያንዳንዱ 7 ምድቦች (መኪና፣ ኮንደሚኒዬም፣ ስልኮች፣ ገንዘብ፣ ላፕቶፕ፣ ቴሌቪዥን፣ በግ) በትክክል 5 የማሳያ ምስል ቦታዎች ተዘጋጅተዋል።
+                </p>
+              </div>
+              <span style="font-size:0.8rem; font-weight:700; background:var(--primary); color:#000; padding:0.25rem 0.75rem; border-radius:12px;">
+                35 የምድብ ምስል ቦታዎች (Slots)
+              </span>
+            </div>
+
+            <!-- Category & Slot Selectors -->
+            <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:1rem; margin-bottom:1.25rem; display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:1rem; align-items:end;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-weight:700; color:var(--primary);">1. ምድብ ይምረጡ (Select Category):</label>
+                <select id="category-mgmt-category-select" class="form-control" style="font-size:0.92rem; font-weight:700;">
+                  <option value="cat-car">🚗 መኪና (Car)</option>
+                  <option value="cat-condo">🏠 ኮንደሚኒዬም (Condo)</option>
+                  <option value="cat-phone">📱 ዘመናዊ ስልኮች (Smartphones)</option>
+                  <option value="cat-money">💰 ገንዘብ (Money)</option>
+                  <option value="cat-laptop">💻 ላፕቶፕ (Laptop)</option>
+                  <option value="cat-tv">📺 ቴሌቪዥን (TV)</option>
+                  <option value="cat-sheep">🐑 በግ (Sheep)</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-weight:700; color:var(--primary);">2. የምስል ቦታ ይምረጡ (Select Slot):</label>
+                <select id="category-mgmt-slot-select" class="form-control" style="font-size:0.92rem; font-weight:700;">
+                  <option value="0">📷 ምስል 1 (ዋና የማሳያ ምስል / Slot 1)</option>
+                  <option value="1">📷 ምስል 2 (Slot 2)</option>
+                  <option value="2">📷 ምስል 3 (Slot 3)</option>
+                  <option value="3">📷 ምስል 4 (Slot 4)</option>
+                  <option value="4">📷 ምስል 5 (Slot 5)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Dedicated Image Upload Section for Category Images -->
+            <div id="category-slot-upload-section" style="background:var(--surface); border:2px solid var(--border-gold); border-radius:var(--radius-md); padding:1.25rem; margin-bottom:1.5rem;">
+              <!-- Header & Location Breadcrumb -->
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:1.25rem; border-bottom:1px solid var(--border); padding-bottom:0.75rem;">
+                <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+                  <span style="font-size:1.05rem; font-weight:800; color:var(--text);">🖼️ የምድብ ምስል መጫኛና ማስተካከያ:</span>
+                  <span id="category-upload-slot-breadcrumb" style="font-size:0.9rem; font-weight:800; color:var(--primary); background:rgba(217,119,6,0.12); padding:0.25rem 0.65rem; border-radius:6px; border:1px solid var(--border-gold);">
+                    📍 መኪና → ምስል 1 (ዋና ምስል)
+                  </span>
+                </div>
+                <span id="category-upload-slot-status-badge" style="font-size:0.78rem; font-weight:700; padding:0.25rem 0.65rem; border-radius:12px; background:rgba(16,185,129,0.15); color:var(--accent-green); border:1px solid var(--accent-green);">
+                  🟢 ንቁ ምስል
+                </span>
+              </div>
+
+              <!-- Side-by-Side Live Comparison Previews (Current vs Local Preview) -->
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1.25rem; margin-bottom:1.25rem;">
+                <!-- 1. Current Image Preview (from Supabase) -->
+                <div style="background:var(--surface-card); border:1px solid var(--border); border-radius:var(--radius-md); padding:1rem; display:flex; flex-direction:column; justify-content:space-between;">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                      <label class="form-label" style="font-weight:700; font-size:0.85rem; color:var(--text); margin:0;">
+                        አሁን ያለው ምስል (Current in Supabase):
+                      </label>
+                      <span style="font-size:0.72rem; font-weight:700; color:var(--primary); background:rgba(217,119,6,0.1); padding:0.1rem 0.4rem; border-radius:4px;">Supabase Record</span>
+                    </div>
+                    <div style="width:100%; height:190px; background:#000; border-radius:var(--radius-sm); border:1px solid var(--border); overflow:hidden; display:flex; align-items:center; justify-content:center; position:relative;">
+                      <img id="category-upload-current-img" src="" alt="Current Category Image" style="max-width:100%; max-height:100%; object-fit:contain;" />
+                      <div id="category-upload-current-empty" style="display:none; flex-direction:column; align-items:center; justify-content:center; color:var(--text-muted); text-align:center; padding:1rem; font-size:0.85rem; width:100%; height:100%;">
+                        <span style="font-size:2rem; margin-bottom:0.35rem;">📷</span>
+                        <span style="font-weight:700;">ምንም ምስል አልተጫነም</span>
+                        <span style="font-size:0.75rem; color:var(--text-dim);">(No image uploaded yet)</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="margin-top:0.6rem;">
+                    <span style="font-size:0.72rem; color:var(--text-muted); display:block; margin-bottom:0.15rem;">የአሁኑ የምስል ሊንክ (URL):</span>
+                    <span id="category-upload-current-url" style="display:block; font-size:0.72rem; color:var(--text-dim); font-family:monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; background:rgba(0,0,0,0.25); padding:0.25rem 0.5rem; border-radius:4px; border:1px solid var(--border);">
+                      ምንም ሊንክ የለም
+                    </span>
+                  </div>
+                </div>
+
+                <!-- 2. Local Live Preview (Before Uploading) -->
+                <div style="background:var(--surface-card); border:2px dashed var(--border-gold); border-radius:var(--radius-md); padding:1rem; display:flex; flex-direction:column; justify-content:space-between;">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                      <label class="form-label" style="font-weight:700; font-size:0.85rem; color:var(--primary); margin:0;">
+                        አዲሱ ምስል ቅድመ እይታ (Local Live Preview):
+                      </label>
+                      <span style="font-size:0.72rem; font-weight:700; color:var(--primary);">አዲስ ፋይል</span>
+                    </div>
+                    <div style="width:100%; height:190px; background:#000; border-radius:var(--radius-sm); border:1px solid var(--border); overflow:hidden; display:flex; align-items:center; justify-content:center; position:relative;">
+                      <img id="category-upload-new-img" src="" alt="New Local Preview" style="max-width:100%; max-height:100%; object-fit:contain; display:none;" />
+                      <div id="category-upload-new-empty" style="display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--text-muted); text-align:center; padding:1rem; font-size:0.85rem; width:100%; height:100%;">
+                        <span style="font-size:2rem; margin-bottom:0.35rem;">📂</span>
+                        <span style="font-weight:700;">አዲስ ፋይል ሲመርጡ ቅድመ እይታ እዚህ ይታያል</span>
+                        <span style="font-size:0.75rem; color:var(--text-dim);">(Select a file below to preview)</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="margin-top:0.6rem; min-height:1.6rem;">
+                    <span id="category-upload-file-meta" style="display:block; font-size:0.75rem; color:var(--primary); font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Upload & Controls Grid -->
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1rem; background:var(--surface-card); border:1px solid var(--border); border-radius:var(--radius-md); padding:1rem; margin-bottom:1rem;">
+                <!-- Option A: File Picker & Upload to ImageBB -->
+                <div>
+                  <label class="form-label" style="font-weight:700; font-size:0.85rem; color:var(--primary); margin-bottom:0.35rem;">
+                    📁 የምድብ ምስል ፋይል ይምረጡና ImageBB ላይ ይጫኑ:
+                  </label>
+                  <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                    <input type="file" id="category-slot-file-input" accept=".jpg,.jpeg,.png,.webp" class="form-control" style="flex:1; min-width:180px; font-size:0.85rem;" />
+                    <button type="button" id="category-slot-upload-btn" class="btn-primary" style="padding:0.6rem 1.1rem; font-size:0.85rem; font-weight:800; white-space:nowrap;">
+                      ⬆️ Upload to ImageBB
+                    </button>
+                  </div>
+                  <div id="category-slot-upload-status" style="font-size:0.82rem; font-weight:700; margin-top:0.4rem; min-height:1.2rem;"></div>
+                </div>
+
+                <!-- Option B: Manual Direct Image URL -->
+                <div>
+                  <label class="form-label" style="font-weight:700; font-size:0.85rem; color:var(--primary); margin-bottom:0.35rem;">
+                    🔗 አማራጭ፡ የቀጥታ Image URL ያስገቡ:
+                  </label>
+                  <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                    <input type="url" id="category-slot-manual-url-input" class="form-control" placeholder="https://i.ibb.co/xxxxxx/category.jpg" style="flex:1; min-width:180px; font-family:monospace; font-size:0.85rem;" />
+                    <button type="button" id="category-slot-save-url-btn" class="btn-secondary" style="padding:0.6rem 1.1rem; font-size:0.85rem; font-weight:700; white-space:nowrap;">
+                      💾 ሊንኩን አስቀምጥ (Save URL)
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Footer / Clear Slot Action -->
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; border-top:1px dashed var(--border); padding-top:0.75rem;">
+                <button type="button" id="category-slot-clear-btn" class="btn-secondary" style="padding:0.5rem 1rem; font-size:0.82rem; font-weight:700; color:var(--accent-red); border-color:rgba(239,68,68,0.4);">
+                  🗑️ ምስሉን ባዶ አድርግ (Clear Image)
+                </button>
+                <span style="font-size:0.75rem; color:var(--text-muted);">
+                  ምስሉ ሲጫን በምድብ ማሳያ ስላይደሮች ላይ በቀጥታ ይዘመናል።
+                </span>
+              </div>
+            </div>
+
+            <!-- Category Filter Chips -->
+            <div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:1.25rem; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:0.6rem;" id="category-mgmt-filter-chips">
+              <button type="button" class="btn-secondary cat-mgmt-filter-btn active" data-cat="all" style="font-size:0.8rem; padding:0.35rem 0.75rem;">🌐 ሁሉንም 7 ምድቦች አሳይ</button>
+              <button type="button" class="btn-secondary cat-mgmt-filter-btn" data-cat="cat-car" style="font-size:0.8rem; padding:0.35rem 0.75rem;">🚗 መኪና</button>
+              <button type="button" class="btn-secondary cat-mgmt-filter-btn" data-cat="cat-condo" style="font-size:0.8rem; padding:0.35rem 0.75rem;">🏠 ኮንደሚኒዬም</button>
+              <button type="button" class="btn-secondary cat-mgmt-filter-btn" data-cat="cat-phone" style="font-size:0.8rem; padding:0.35rem 0.75rem;">📱 ዘመናዊ ስልኮች</button>
+              <button type="button" class="btn-secondary cat-mgmt-filter-btn" data-cat="cat-money" style="font-size:0.8rem; padding:0.35rem 0.75rem;">💰 ገንዘብ</button>
+              <button type="button" class="btn-secondary cat-mgmt-filter-btn" data-cat="cat-laptop" style="font-size:0.8rem; padding:0.35rem 0.75rem;">💻 ላፕቶፕ</button>
+              <button type="button" class="btn-secondary cat-mgmt-filter-btn" data-cat="cat-tv" style="font-size:0.8rem; padding:0.35rem 0.75rem;">📺 ቴሌቪዥን</button>
+              <button type="button" class="btn-secondary cat-mgmt-filter-btn" data-cat="cat-sheep" style="font-size:0.8rem; padding:0.35rem 0.75rem;">🐑 በግ</button>
+            </div>
+
+            <!-- Dynamic Category Slots Grid -->
+            <div id="category-slots-container" style="display:flex; flex-direction:column; gap:1.75rem;">
+              <!-- Rendered dynamically for each category with 5 slots -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= SUBSECTION C: የሽልማት ምስሎች (175 SLOTS) ================= -->
+        <div id="subtab-content-prize" class="img-subtab-content" style="display:none;">
+          <div class="admin-card" style="margin-bottom:1.5rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.75rem;">
+              <div>
+                <h3 style="font-size:1.2rem; font-weight:800; color:var(--text); margin:0 0 0.35rem 0;">🎁 የሽልማት ምስሎች (Prize Images — 175 Slots)</h3>
+                <p style="font-size:0.85rem; color:var(--text-muted); margin:0;">
+                  ምድብ እና እጣ ቁጥር ይምረጡ፤ ለእያንዳንዱ ሽልማት 5 ምስሎች በካርድ ተደርድረው ይታያሉ።
+                </p>
+              </div>
+              <span style="font-size:0.8rem; font-weight:700; background:var(--border-gold); color:#000; padding:0.25rem 0.75rem; border-radius:12px;">
+                175 የእጣ ምስል ቦታዎች (Slots)
+              </span>
+            </div>
+
+            <!-- Category, Prize & Slot Selectors -->
+            <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:1rem; margin-bottom:1.25rem; display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1rem; align-items:end;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-weight:700; color:var(--primary);">1. ምድብ ይምረጡ (Select Category):</label>
+                <select id="prize-mgmt-category-select" class="form-control" style="font-size:0.92rem; font-weight:700;">
+                  <option value="cat-car">🚗 መኪና (Car)</option>
+                  <option value="cat-condo">🏠 ኮንደሚኒዬም (Condo)</option>
+                  <option value="cat-phone">📱 ዘመናዊ ስልኮች (Smartphones)</option>
+                  <option value="cat-money">💰 ገንዘብ (Money)</option>
+                  <option value="cat-laptop">💻 ላፕቶፕ (Laptop)</option>
+                  <option value="cat-tv">📺 ቴሌቪዥን (TV)</option>
+                  <option value="cat-sheep">🐑 በግ (Sheep)</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-weight:700; color:var(--primary);">2. ሽልማት ይምረጡ (Select Prize):</label>
+                <select id="prize-mgmt-prize-select" class="form-control" style="font-size:0.92rem; font-weight:700;">
+                  <!-- Dynamically populated based on category prizes -->
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-weight:700; color:var(--primary);">3. የምስል ቦታ ይምረጡ (Select Slot):</label>
+                <select id="prize-mgmt-slot-select" class="form-control" style="font-size:0.92rem; font-weight:700;">
+                  <option value="0">📷 ምስል 1 (ዋና ምስል / Slot 1)</option>
+                  <option value="1">📷 ምስል 2 (Slot 2)</option>
+                  <option value="2">📷 ምስል 3 (Slot 3)</option>
+                  <option value="3">📷 ምስል 4 (Slot 4)</option>
+                  <option value="4">📷 ምስል 5 (Slot 5)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Dedicated Image Upload Section for Selected Category/Prize/Slot -->
+            <div id="prize-slot-upload-section" style="background:var(--surface); border:2px solid var(--border-gold); border-radius:var(--radius-md); padding:1.25rem; margin-bottom:1.5rem;">
+              <!-- Header & Location Breadcrumb -->
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:1.25rem; border-bottom:1px solid var(--border); padding-bottom:0.75rem;">
+                <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+                  <span style="font-size:1.05rem; font-weight:800; color:var(--text);">🖼️ የምስል መጫኛና ማስተካከያ (Image Upload):</span>
+                  <span id="prize-upload-slot-breadcrumb" style="font-size:0.9rem; font-weight:800; color:var(--primary); background:rgba(217,119,6,0.12); padding:0.25rem 0.65rem; border-radius:6px; border:1px solid var(--border-gold);">
+                    📍 መኪና → ሽልማት 1 → ምስል 1 (ዋና ምስል)
+                  </span>
+                </div>
+                <span id="prize-upload-slot-status-badge" style="font-size:0.78rem; font-weight:700; padding:0.25rem 0.65rem; border-radius:12px; background:rgba(16,185,129,0.15); color:var(--accent-green); border:1px solid var(--accent-green);">
+                  🟢 ንቁ ምስል
+                </span>
+              </div>
+
+              <!-- Side-by-Side Live Comparison Previews (Current vs Local Preview) -->
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1.25rem; margin-bottom:1.25rem;">
+                <!-- 1. Current Image Preview (from Supabase) -->
+                <div style="background:var(--surface-card); border:1px solid var(--border); border-radius:var(--radius-md); padding:1rem; display:flex; flex-direction:column; justify-content:space-between;">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                      <label class="form-label" style="font-weight:700; font-size:0.85rem; color:var(--text); margin:0;">
+                        አሁን ያለው ምስል (Current in Supabase):
+                      </label>
+                      <span style="font-size:0.72rem; font-weight:700; color:var(--primary); background:rgba(217,119,6,0.1); padding:0.1rem 0.4rem; border-radius:4px;">Supabase Record</span>
+                    </div>
+                    <div style="width:100%; height:190px; background:#000; border-radius:var(--radius-sm); border:1px solid var(--border); overflow:hidden; display:flex; align-items:center; justify-content:center; position:relative;">
+                      <img id="prize-upload-current-img" src="" alt="Current Image" style="max-width:100%; max-height:100%; object-fit:contain;" />
+                      <div id="prize-upload-current-empty" style="display:none; flex-direction:column; align-items:center; justify-content:center; color:var(--text-muted); text-align:center; padding:1rem; font-size:0.85rem; width:100%; height:100%;">
+                        <span style="font-size:2rem; margin-bottom:0.35rem;">📷</span>
+                        <span style="font-weight:700;">ምንም ምስል አልተጫነም</span>
+                        <span style="font-size:0.75rem; color:var(--text-dim);">(No image uploaded yet)</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="margin-top:0.6rem;">
+                    <span style="font-size:0.72rem; color:var(--text-muted); display:block; margin-bottom:0.15rem;">የአሁኑ የምስል ሊንክ (URL):</span>
+                    <span id="prize-upload-current-url" style="display:block; font-size:0.72rem; color:var(--text-dim); font-family:monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; background:rgba(0,0,0,0.25); padding:0.25rem 0.5rem; border-radius:4px; border:1px solid var(--border);">
+                      ምንም ሊንክ የለም
+                    </span>
+                  </div>
+                </div>
+
+                <!-- 2. Local Live Preview (Before Uploading) -->
+                <div style="background:var(--surface-card); border:2px dashed var(--border-gold); border-radius:var(--radius-md); padding:1rem; display:flex; flex-direction:column; justify-content:space-between;">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+                      <label class="form-label" style="font-weight:700; font-size:0.85rem; color:var(--primary); margin:0;">
+                        አዲሱ ምስል ቅድመ እይታ (Local Live Preview):
+                      </label>
+                      <span style="font-size:0.72rem; font-weight:700; color:var(--primary);">አዲስ ፋይል</span>
+                    </div>
+                    <div style="width:100%; height:190px; background:#000; border-radius:var(--radius-sm); border:1px solid var(--border); overflow:hidden; display:flex; align-items:center; justify-content:center; position:relative;">
+                      <img id="prize-upload-new-img" src="" alt="New Local Preview" style="max-width:100%; max-height:100%; object-fit:contain; display:none;" />
+                      <div id="prize-upload-new-empty" style="display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--text-muted); text-align:center; padding:1rem; font-size:0.85rem; width:100%; height:100%;">
+                        <span style="font-size:2rem; margin-bottom:0.35rem;">📂</span>
+                        <span style="font-weight:700;">አዲስ ፋይል ሲመርጡ ቅድመ እይታ እዚህ ይታያል</span>
+                        <span style="font-size:0.75rem; color:var(--text-dim);">(Select a file below to preview)</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="margin-top:0.6rem; min-height:1.6rem;">
+                    <span id="prize-upload-file-meta" style="display:block; font-size:0.75rem; color:var(--primary); font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Upload & Controls Grid -->
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1rem; background:var(--surface-card); border:1px solid var(--border); border-radius:var(--radius-md); padding:1rem; margin-bottom:1rem;">
+                <!-- Option A: File Picker & Upload to ImageBB -->
+                <div>
+                  <label class="form-label" style="font-weight:700; font-size:0.85rem; color:var(--primary); margin-bottom:0.35rem;">
+                    📁 ፋይል ይምረጡና ImageBB ላይ ይጫኑ:
+                  </label>
+                  <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                    <input type="file" id="prize-slot-file-input" accept=".jpg,.jpeg,.png,.webp" class="form-control" style="flex:1; min-width:180px; font-size:0.85rem;" />
+                    <button type="button" id="prize-slot-upload-btn" class="btn-primary" style="padding:0.6rem 1.1rem; font-size:0.85rem; font-weight:800; white-space:nowrap;">
+                      ⬆️ Upload to ImageBB
+                    </button>
+                  </div>
+                  <div id="prize-slot-upload-status" style="font-size:0.82rem; font-weight:700; margin-top:0.4rem; min-height:1.2rem;"></div>
+                </div>
+
+                <!-- Option B: Manual Direct Image URL -->
+                <div>
+                  <label class="form-label" style="font-weight:700; font-size:0.85rem; color:var(--primary); margin-bottom:0.35rem;">
+                    🔗 አማራጭ፡ የ ImgBB ወይም የቀጥታ Image URL ያስገቡ:
+                  </label>
+                  <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                    <input type="url" id="prize-slot-manual-url-input" class="form-control" placeholder="https://i.ibb.co/xxxxxx/image.jpg" style="flex:1; min-width:180px; font-family:monospace; font-size:0.85rem;" />
+                    <button type="button" id="prize-slot-save-url-btn" class="btn-secondary" style="padding:0.6rem 1.1rem; font-size:0.85rem; font-weight:700; white-space:nowrap;">
+                      💾 ሊንኩን አስቀምጥ (Save URL)
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Footer / Clear Slot Action -->
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; border-top:1px dashed var(--border); padding-top:0.75rem;">
+                <button type="button" id="prize-slot-clear-btn" class="btn-secondary" style="padding:0.5rem 1rem; font-size:0.82rem; font-weight:700; color:var(--accent-red); border-color:rgba(239,68,68,0.4);">
+                  🗑️ ምስሉን ባዶ አድርግ (Clear Image)
+                </button>
+                <span style="font-size:0.75rem; color:var(--text-muted);">
+                  ምስሉ ሲጫን በራሱ በ Supabase ይቀመጣል፤ ድረ-ገፁ ላይ በቀጥታ ይዘመናል።
+                </span>
+              </div>
+            </div>
+
+            <!-- 5 Slots Grid for Selected Prize -->
+            <div id="prize-5-slots-container">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= SUBSECTION ALL: ሁሉንም ምስሎች በአንድ ላይ ================= -->
+        <div id="subtab-content-all" class="img-subtab-content" style="display:none;">
+          <div class="admin-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.75rem;">
+              <div>
+                <h3 style="font-size:1.15rem; font-weight:800; color:var(--text); margin:0;">🌐 ሁሉም የሳይቱ 210+ ምስሎች (All 215 Website Images)</h3>
+                <p style="font-size:0.85rem; color:var(--text-muted); margin:0.25rem 0 0 0;">ሁሉንም የመነሻ ገፅ፣ የምድብ እና የእጣ ምስሎች በአንድ ላይ ፈልገው ይቀይሩ።</p>
+              </div>
+              <span id="all-images-count-badge" style="font-size:0.85rem; font-weight:700; background:var(--primary); color:#000; padding:0.25rem 0.75rem; border-radius:12px;">215 ምስሎች</span>
+            </div>
+
+            <!-- Multi-Dimensional Filters -->
+            <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:1rem; margin-bottom:1.25rem; display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:0.75rem;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-size:0.8rem; font-weight:700; color:var(--primary);">ምድብ ማጣሪያ (Category):</label>
+                <select id="all-grid-filter-category" class="form-control" style="font-size:0.85rem;">
+                  <option value="all">🌐 ሁሉም ምድቦች (All)</option>
+                  <option value="homepage">🖼️ መነሻ ገፅ (Homepage)</option>
+                  <option value="cat-car">🚗 መኪና</option>
+                  <option value="cat-condo">🏠 ኮንደሚኒዬም</option>
+                  <option value="cat-phone">📱 ዘመናዊ ስልኮች</option>
+                  <option value="cat-money">💰 ገንዘብ</option>
+                  <option value="cat-laptop">💻 ላፕቶፕ</option>
+                  <option value="cat-tv">📺 ቴሌቪዥን</option>
+                  <option value="cat-sheep">🐑 በግ</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-size:0.8rem; font-weight:700; color:var(--primary);">ሽልማት ማጣሪያ (Prize):</label>
+                <select id="all-grid-filter-prize" class="form-control" style="font-size:0.85rem;">
+                  <option value="all">🎁 ሁሉም ሽልማቶች (All)</option>
+                  <option value="1">ሽልማት 1 (Prize 1)</option>
+                  <option value="2">ሽልማት 2 (Prize 2)</option>
+                  <option value="3">ሽልማት 3 (Prize 3)</option>
+                  <option value="4">ሽልማት 4 (Prize 4)</option>
+                  <option value="5">ሽልማት 5 (Prize 5)</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-size:0.8rem; font-weight:700; color:var(--primary);">የምስል ቁጥር ማጣሪያ (Slot):</label>
+                <select id="all-grid-filter-slot" class="form-control" style="font-size:0.85rem;">
+                  <option value="all">📷 ሁሉም ምስሎች (All Slots)</option>
+                  <option value="1">ምስል 1 (Slot 1)</option>
+                  <option value="2">ምስል 2 (Slot 2)</option>
+                  <option value="3">ምስል 3 (Slot 3)</option>
+                  <option value="4">ምስል 4 (Slot 4)</option>
+                  <option value="5">ምስል 5 (Slot 5)</option>
+                </select>
+              </div>
+            </div>
+            
+            <div id="homepage-images-list-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:1.25rem;">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      </div>
+
+      <!-- TAB: TICKET / CATEGORY PRICE MANAGEMENT -->
+      <div class="admin-tab-content" id="tab-content-category-prices" style="display:none;">
+        <div class="admin-card">
+          <div style="margin-bottom: 1.5rem;">
+            <h3 style="font-size:1.3rem; font-weight:800; color:var(--primary);">💰 Ticket / Category Price Management (የቲኬትና የምድብ ዋጋዎች)</h3>
+            <p style="font-size:0.85rem; color:var(--text-muted);">እያንዳንዱ የሎተሪ ምድብ የራሱ የተለየ የእጣ ዋጋ ይኖረዋል። አንዱን ምድብ ማስተካከል ሌላውን ምድብ አይቀይርም።</p>
+          </div>
+
+          <div id="category-prices-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap:1.25rem;">
+            <!-- Rendered dynamically for each category -->
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: BRANDING & SITE SETTINGS -->
+      <div class="admin-tab-content" id="tab-content-settings" style="display:none;">
+        
+        <!-- DEDICATED LOGO MANAGEMENT CARD -->
+        <div class="admin-card" style="max-width:800px; margin-bottom:1.5rem; border:1px solid var(--border-gold);">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem;">
+            <h3 style="font-size:1.25rem; font-weight:800; color:var(--primary); margin:0;">🏷️ የሳይቱ ሎጎ አስተዳደር (Logo Management)</h3>
+            <span class="gold-badge">የኦፊሴላዊ ብራንድ ሎጎ</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:180px 1fr; gap:1.5rem; align-items:start;">
+            <!-- Current Logo Preview Container -->
+            <div style="text-align:center;">
+              <label class="form-label" style="font-size:0.85rem; font-weight:700; margin-bottom:0.5rem; display:block;">Current Logo Preview:</label>
+              <div style="width:180px; height:120px; border-radius:var(--radius-md); background:#000; border:2px solid var(--primary); display:flex; align-items:center; justify-content:center; padding:0.5rem; overflow:hidden; box-shadow:var(--shadow-sm);">
+                <img id="admin-logo-preview" src="/assets/official_logo.jpg" alt="Official Logo" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.src='/assets/official_logo.jpg';" />
+              </div>
+            </div>
+
+            <!-- Controls Area -->
+            <div>
+              <div class="form-group" style="margin-bottom:0.85rem;">
+                <label class="form-label">Direct ImgBB Logo URL (የሎጎ ምስል ሊንክ)፡</label>
+                <input type="url" id="setting-logo-url" class="form-control" placeholder="https://i.ibb.co/..." style="font-size:0.9rem; font-family:monospace;" />
+                <span style="font-size:0.78rem; color:var(--text-dim); display:block; margin-top:0.3rem;">
+                  ሎጎ ሲቀየር በሳይቱ ላይ ባሉ ሁሉም ቦታዎች (Header, Footer, Mobile, Admin) በራሱ ይተካል።
+                </span>
+              </div>
+
+              <!-- Direct File Upload via ImgBB -->
+              <div class="form-group" style="margin-bottom:1rem;">
+                <label class="form-label">ወይም አዲስ የሎጎ ፋይል ይጫኑ (Upload Logo Image File)፡</label>
+                <input type="file" id="logo-file-upload-input" accept="image/*" class="form-control" style="font-size:0.85rem;" />
+                <div id="logo-upload-status" style="font-size:0.8rem; margin-top:0.3rem;"></div>
+              </div>
+
+              <!-- Control Action Buttons -->
+              <div style="display:flex; flex-wrap:wrap; gap:0.6rem;">
+                <button type="button" id="save-logo-btn" class="btn-primary" style="padding:0.45rem 1rem; font-size:0.85rem;">
+                  💾 ሎጎ ቀይር / አስቀምጥ (Replace Logo)
+                </button>
+                <button type="button" id="reset-logo-btn" class="btn-secondary" style="padding:0.45rem 1rem; font-size:0.85rem; color:var(--accent-red); border-color:var(--accent-red);">
+                  🔄 ወደ ዋናው ኦፊሴላዊ ሎጎ መልስ (Reset Logo)
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card" style="max-width:800px;">
+          <h3 style="font-size:1.25rem; font-weight:800; margin-bottom:1.5rem;">የሳይት ብራንዲንግና ፅሁፎች ማስተካከያ</h3>
+
+          <form id="site-settings-form">
+
+            <div class="form-group">
+              <label class="form-label">የእጣ ዋጋ (Default Lottery Ticket Price)</label>
+              <input type="text" id="setting-ticket-price" class="form-control" placeholder="ምሳሌ፡ 50 ብር" />
+              <span style="font-size:0.8rem; color:var(--text-dim);">የሎተሪ ቲኬቱ ዋና የእጣ ዋጋ (ምሳሌ፡ 50 ብር፣ 100 ብር)</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">የዋና ገፅ ትልቅ ማስታወቂያ (Hero Headline)</label>
+              <textarea id="setting-hero-title" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">የግርጌ ማስጠንቀቂያ ፅሁፍ (Bottom Disclaimer Text)</label>
+              <textarea id="setting-disclaimer-text" class="form-control" rows="2"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">የኦፕሬተር መረጃ (Operator Info)</label>
+              <input type="text" id="setting-operator-info" class="form-control" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">የህግ መረጃ (Legal Info)</label>
+              <input type="text" id="setting-legal-info" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn-primary" style="margin-top:1.5rem;">
+              ለውጦችን መዝግብ 💾
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- PRIZE EDIT MODAL -->
+  <div class="modal-overlay" id="prize-modal">
+    <div class="modal-container" style="max-width:620px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="prize-modal-title">የእጣ መረጃ፣ ዋጋና ImgBB ምስል ማስተካከያ</h3>
+        <button class="modal-close" onclick="document.getElementById('prize-modal').classList.remove('open')">✕</button>
+      </div>
+
+      <form id="prize-edit-form">
+        <input type="hidden" id="edit-prize-id" />
+        
+        <!-- CATEGORY DROPDOWN -->
+        <div class="form-group" style="margin-bottom:1.25rem;">
+          <label class="form-label">የእጣ ምድብ (Category) <span style="color:var(--primary);">*</span></label>
+          <select id="edit-prize-category" class="form-control" required style="font-weight:600;">
+          </select>
+        </div>
+
+        <!-- PRIZE TITLE -->
+        <div class="form-group" style="margin-bottom:1.25rem;">
+          <label class="form-label">የእጣ ርዕስ (Prize Title) <span style="color:var(--primary);">*</span></label>
+          <input type="text" id="edit-prize-title" class="form-control" placeholder="ምሳሌ፡ ቶዮታ ቪትዝ 2024 አዲስ መኪና" required />
+        </div>
+
+        <!-- PRICE INSERTION SECTION -->
+        <div class="form-group" style="margin-bottom:1.25rem; background:rgba(212, 175, 55, 0.05); padding:1rem; border-radius:8px; border:1px dashed rgba(212, 175, 55, 0.3);">
+          <label class="form-label" style="display:flex; align-items:center; gap:0.4rem;">
+            <span>💰</span>
+            <strong style="color:var(--primary);">የእጣ ዋጋ ማስገቢያ (Ticket Price Insertion)</strong>
+            <span style="color:var(--primary);">*</span>
+          </label>
+          <input type="text" id="edit-prize-ticket-price" class="form-control" placeholder="ምሳሌ፡ 50 ብር" required style="font-size:1.15rem; font-weight:800; color:var(--primary); font-family:var(--font-numeric);" />
+          <div style="display:flex; gap:0.4rem; margin-top:0.5rem; align-items:center; flex-wrap:wrap;">
+            <span style="font-size:0.75rem; color:var(--text-dim);">ፈጣን ዋጋዎች፡</span>
+            <button type="button" class="btn-secondary price-preset-btn" data-price="50 ብር" style="padding:0.2rem 0.5rem; font-size:0.75rem;">50 ብር</button>
+            <button type="button" class="btn-secondary price-preset-btn" data-price="100 ብር" style="padding:0.2rem 0.5rem; font-size:0.75rem;">100 ብር</button>
+            <button type="button" class="btn-secondary price-preset-btn" data-price="200 ብር" style="padding:0.2rem 0.5rem; font-size:0.75rem;">200 ብር</button>
+            <button type="button" class="btn-secondary price-preset-btn" data-price="500 ብር" style="padding:0.2rem 0.5rem; font-size:0.75rem;">500 ብር</button>
+          </div>
+        </div>
+
+        <!-- IMGBB IMAGE INSERTION SECTION -->
+        <div class="form-group" style="margin-bottom:1.25rem; background:var(--surface-card); padding:1rem; border-radius:8px; border:1px solid var(--border);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; flex-wrap:wrap; gap:0.5rem;">
+            <label class="form-label" style="margin-bottom:0; display:flex; align-items:center; gap:0.4rem;">
+              <span>🖼️</span>
+              <strong style="color:var(--text-main);">የ ImgBB ምስሎች (ImgBB Image URLs)</strong>
+            </label>
+
+            <!-- UPLOAD BUTTON -->
+            <button type="button" id="imgbb-upload-btn" class="btn-secondary" style="font-size:0.8rem; padding:0.35rem 0.75rem;">
+              📤 ምስል ምረጥና ወደ ImgBB ጫን
+            </button>
+            <input type="file" id="imgbb-file-input" accept="image/*" multiple style="display:none;" />
+          </div>
+
+          <span id="imgbb-upload-status" style="display:block; font-size:0.8rem; color:var(--primary); font-weight:600; margin-bottom:0.4rem;"></span>
+
+          <textarea id="edit-prize-image-urls" class="form-control" rows="4" placeholder="የ ImgBB ፎቶ ሊንክ ያስገቡ (ምሳሌ፡ https://i.ibb.co/xyz/car.jpg) - ብዙ ምስል ካለ እያንዳንዱን በየመስመሩ ያስገቡ"></textarea>
+          <span style="font-size:0.75rem; color:var(--text-dim); display:block; margin-top:0.3rem;">
+            💡 ImgBB direct image URLs (ምሳሌ፡ <code>https://i.ibb.co/...</code>) እያንዳንዱን በየመስመሩ ያስገቡ። በዋናው ገፅ ካሩሰል ላይ ይታያሉ!
+          </span>
+
+          <!-- LIVE IMAGE PREVIEW GALLERY -->
+          <div id="prize-image-preview-gallery" style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.75rem;"></div>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="form-group" style="margin-bottom:1.25rem;">
+          <label class="form-label">የእጣ መግለጫ (Description)</label>
+          <textarea id="edit-prize-description" class="form-control" rows="2" placeholder="የእጣው ማብራሪያ..."></textarea>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.5rem;">
+          <button type="button" class="btn-secondary" onclick="document.getElementById('prize-modal').classList.remove('open')">ሰርዝ</button>
+          <button type="submit" class="btn-primary">አስቀምጥ 💾</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- PAYMENT METHOD EDIT MODAL -->
+  <div class="modal-overlay" id="payment-method-modal">
+    <div class="modal-container" style="max-width:500px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="payment-modal-title">የባንክ አካውንት ማስተካከያ</h3>
+        <button class="modal-close" onclick="document.getElementById('payment-method-modal').classList.remove('open')">✕</button>
+      </div>
+
+      <form id="payment-method-form">
+        <input type="hidden" id="edit-pay-id" />
+        
+        <div class="form-group" style="margin-bottom:1.25rem;">
+          <label class="form-label">የባንክ / አገልግሎት ስም (Bank Name)</label>
+          <input type="text" id="edit-pay-name" class="form-control" placeholder="ምሳሌ፡ ንግድ ባንክ ወይም ቴሌብር" required />
+        </div>
+
+        <div class="form-group" style="margin-bottom:1.25rem;">
+          <label class="form-label">የአካውንት ቁጥር (Account Number) <span style="color:var(--primary);">*</span></label>
+          <input type="text" id="edit-pay-account" class="form-control" placeholder="ምሳሌ፡ 1000327468956" required style="font-size:1.15rem; font-weight:700; color:var(--primary); font-family:var(--font-numeric);" />
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.5rem;">
+          <button type="button" class="btn-secondary" onclick="document.getElementById('payment-method-modal').classList.remove('open')">ሰርዝ</button>
+          <button type="submit" class="btn-primary">አስቀምጥ 💾</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- PAYMENT SCREENSHOT MODAL -->
+  <div class="modal-overlay" id="screenshot-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title">የክፍያ ማረጋገጫ ደረሰኝ</h3>
+        <button class="modal-close" onclick="document.getElementById('screenshot-modal').classList.remove('open')">✕</button>
+      </div>
+
+      <div style="text-align: center;">
+        <p id="modal-screenshot-phone" style="font-family:var(--font-numeric); font-size:1.1rem; font-weight:700; color:var(--primary); margin-bottom:1rem;"></p>
+        <div style="background:#000; padding:1rem; border-radius:var(--radius-md); border:1px solid var(--border);">
+          <img id="modal-screenshot-img" src="" alt="ደረሰኝ" style="max-width:100%; max-height:450px; object-fit:contain; margin:0 auto;" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STANDARDIZED MODAL FOR FILE PICKER / IMAGEBB UPLOAD CONFIRMATION -->
+  <div class="modal-overlay" id="image-upload-confirm-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); z-index:10000; align-items:center; justify-content:center; padding:1rem; backdrop-filter:blur(4px);">
+    <div class="modal-container" style="max-width:540px; background:var(--surface-card); border:2px solid var(--border-gold); border-radius:var(--radius-lg); padding:1.75rem; box-shadow:var(--shadow-lg);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; border-bottom:1px solid var(--border); padding-bottom:0.75rem;">
+        <h3 style="font-size:1.2rem; font-weight:800; color:var(--primary); margin:0;">📷 ምስል ማረጋገጫና ወደ ImageBB መጫኛ</h3>
+        <button type="button" class="modal-close" id="img-confirm-close-btn" style="background:none; border:none; color:var(--text); font-size:1.5rem; cursor:pointer;">✕</button>
+      </div>
+
+      <div style="margin-bottom:1.25rem;">
+        <div id="img-confirm-slot-info" style="font-size:0.9rem; font-weight:700; color:var(--text); margin-bottom:0.75rem; background:var(--surface); padding:0.6rem 0.85rem; border-radius:6px; border:1px solid var(--border);"></div>
+
+        <div style="width:100%; height:220px; background:#000; border-radius:var(--radius-md); overflow:hidden; border:2px solid var(--border-gold); display:flex; align-items:center; justify-content:center; margin-bottom:0.75rem;">
+          <img id="img-confirm-preview" src="" alt="Selected Preview" style="max-width:100%; max-height:100%; object-fit:contain;" />
+        </div>
+
+        <div id="img-confirm-file-meta" style="font-size:0.8rem; color:var(--text-muted); text-align:center;"></div>
+        <div id="img-confirm-upload-status" style="font-size:0.9rem; font-weight:700; text-align:center; margin-top:0.75rem; min-height:1.4rem;"></div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:0.85rem; margin-top:1.25rem; border-top:1px solid var(--border); padding-top:1rem;">
+        <button type="button" id="img-confirm-cancel-btn" class="btn-secondary" style="padding:0.6rem 1.25rem; font-weight:700;">ሰርዝ</button>
+        <button type="button" id="img-confirm-upload-btn" class="btn-primary" style="padding:0.6rem 1.75rem; font-weight:800;">⬆️ ImageBB ላይ ጫን</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STANDARDIZED MODAL FOR DELETE CONFIRMATION -->
+  <div class="modal-overlay" id="image-delete-confirm-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); z-index:10000; align-items:center; justify-content:center; padding:1rem; backdrop-filter:blur(4px);">
+    <div class="modal-container" style="max-width:440px; background:var(--surface-card); border:2px solid var(--accent-red); border-radius:var(--radius-lg); padding:1.75rem; text-align:center; box-shadow:var(--shadow-lg);">
+      <div style="font-size:2.5rem; margin-bottom:0.75rem;">🗑️</div>
+      <h3 style="font-size:1.2rem; font-weight:800; color:var(--text); margin-bottom:0.5rem;">ይህን ምስል ማስወገድ ይፈልጋሉ?</h3>
+      <p id="img-delete-slot-info" style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem;"></p>
+
+      <div style="display:flex; justify-content:center; gap:1rem;">
+        <button type="button" id="img-delete-cancel-btn" class="btn-secondary" style="padding:0.6rem 1.5rem; font-weight:700;">ሰርዝ</button>
+        <button type="button" id="img-delete-confirm-btn" class="btn-primary" style="padding:0.6rem 1.5rem; font-weight:800; background:var(--accent-red); border-color:var(--accent-red);">አዎ፣ አስወግድ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HIDDEN MASTER FILE INPUT FOR REAL PICKER -->
+  <input type="file" id="master-image-file-input" accept="image/jpeg,image/jpg,image/png,image/webp" style="display:none;" />
+
+  <!-- REPLACE IMAGE MODAL INTERFACE -->
+  <div class="modal-overlay" id="replace-image-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); z-index:9999; align-items:center; justify-content:center; padding:1rem; backdrop-filter:blur(4px);">
+    <div class="modal-container" style="background:var(--surface-card); border:2px solid var(--border-gold); border-radius:var(--radius-lg); width:100%; max-width:680px; max-height:92vh; overflow-y:auto; padding:1.75rem; box-shadow:var(--shadow-lg);">
+      
+      <!-- Modal Header -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--border); padding-bottom:0.75rem;">
+        <h3 style="font-size:1.25rem; font-weight:800; color:var(--primary); margin:0;">🖼️ ምስል ማስተካከያና መቀየሪያ (Replace Image)</h3>
+        <button type="button" id="replace-modal-close-btn" style="background:none; border:none; color:var(--text); font-size:1.5rem; cursor:pointer;">✕</button>
+      </div>
+
+      <!-- Prominent Location Breadcrumb -->
+      <div id="replace-modal-location-text" style="font-size:1.05rem; font-weight:800; color:var(--primary); background:rgba(217,119,6,0.15); padding:0.65rem 1rem; border-radius:6px; border:1px solid var(--border-gold); margin-bottom:1.25rem; display:flex; align-items:center; gap:0.5rem;">
+        <!-- Filled dynamically: e.g. 📍 መኪና → ሽልማት 1 → ምስል 3 -->
+      </div>
+
+      <!-- Side-by-Side Previews (Current vs New) -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1rem; margin-bottom:1.25rem;">
+        <!-- Current Image Box -->
+        <div>
+          <label class="form-label" style="font-weight:700; font-size:0.85rem; color:var(--text-muted);">አሁን ያለው ምስል (Current Image):</label>
+          <div style="width:100%; height:160px; background:#000; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border); display:flex; align-items:center; justify-content:center;">
+            <img id="replace-modal-current-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='200'><rect fill='%2313131a' width='400' height='200'/><text fill='%238a8a9e' font-size='14' font-family='sans-serif' font-weight='bold' x='50%' y='50%' text-anchor='middle' dominant-baseline='middle'>No Image</text></svg>" alt="Current Preview" style="max-width:100%; max-height:100%; object-fit:contain;" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'200\'><rect fill=\'%2313131a\' width=\'400\' height=\'200\'/><text fill=\'%238a8a9e\' font-size=\'14\' font-family=\'sans-serif\' font-weight=\'bold\' x=\'50%\' y=\'50%\' text-anchor=\'middle\' dominant-baseline=\'middle\'>No Image</text></svg>';" />
+          </div>
+          <span id="replace-modal-current-url-text" style="display:block; font-size:0.72rem; color:var(--text-dim); font-family:monospace; margin-top:0.35rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
+        </div>
+
+        <!-- New Image Preview Box -->
+        <div>
+          <label class="form-label" style="font-weight:700; font-size:0.85rem; color:var(--primary);">አዲሱ ምስል ቅድመ እይታ (New Preview):</label>
+          <div style="width:100%; height:160px; background:#000; border-radius:var(--radius-md); overflow:hidden; border:2px dashed var(--border-gold); display:flex; align-items:center; justify-content:center;">
+            <img id="replace-modal-new-preview-img" src="" alt="New Preview" style="max-width:100%; max-height:100%; object-fit:contain; display:none;" />
+            <span id="replace-modal-no-new-preview" style="font-size:0.8rem; color:var(--text-muted); text-align:center; padding:0.5rem;">ምንም አዲስ ምስል አልተመረጠም</span>
+          </div>
+          <span id="replace-modal-file-meta" style="display:block; font-size:0.75rem; color:var(--primary); margin-top:0.35rem; font-weight:600;"></span>
+        </div>
+      </div>
+
+      <!-- Title / Label Input -->
+      <div class="form-group" style="margin-bottom:1.25rem;">
+        <label class="form-label" style="font-weight:700; font-size:0.85rem;">የምስሉ ስም / ርዕስ (Image Title / Label):</label>
+        <input type="text" id="replace-modal-title-input" class="form-control" placeholder="የምስል ስም" />
+      </div>
+
+      <!-- Replacement Options Section -->
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:1.25rem; margin-bottom:1.5rem;">
+        <h4 style="font-size:0.95rem; font-weight:800; color:var(--text); margin:0 0 1rem 0;">አዲስ ምስል ማስገቢያ አማራጮች (New Image Options):</h4>
+        
+        <!-- Option A: Direct File Picker with Upload to ImgBB -->
+        <div style="margin-bottom:1.25rem; padding-bottom:1rem; border-bottom:1px dashed var(--border);">
+          <label class="form-label" style="font-weight:700; color:var(--primary); font-size:0.88rem;">
+            📁 አማራጭ 1 — ከስልክ/ኮምፒውተር ፋይል ይምረጡ (JPG, JPEG, PNG, WEBP):
+          </label>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+            <input type="file" id="replace-modal-file-input" accept="image/jpeg,image/jpg,image/png,image/webp" class="form-control" style="flex:1; font-size:0.85rem;" />
+            <button type="button" id="replace-modal-upload-btn" class="btn-secondary" style="padding:0.55rem 1rem; font-size:0.85rem; font-weight:700;">
+              ⬆️ ImageBB ላይ ጫን
+            </button>
+          </div>
+          <div id="replace-modal-upload-status" style="font-size:0.85rem; font-weight:700; margin-top:0.45rem; min-height:1.2rem;"></div>
+        </div>
+
+        <!-- Option B: Direct ImgBB URL -->
+        <div>
+          <label class="form-label" style="font-weight:700; color:var(--primary); font-size:0.88rem;">
+            🔗 አማራጭ 2 — የ ImgBB Direct URL በቀጥታ ያስገቡ (Paste ImgBB URL):
+          </label>
+          <input type="url" id="replace-modal-url-input" class="form-control" placeholder="https://i.ibb.co/xxxxxx/image.jpg" style="font-family:monospace; font-size:0.85rem;" />
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem;">
+        <button type="button" id="replace-modal-clear-btn" class="btn-secondary" style="padding:0.6rem 1rem; font-size:0.85rem; color:var(--accent-red); border-color:rgba(239,68,68,0.4);">
+          🗑️ ምስሉን ባዶ አድርግ (Clear)
+        </button>
+        <div style="display:flex; gap:0.75rem;">
+          <button type="button" id="replace-modal-cancel-btn" class="btn-secondary" style="padding:0.6rem 1.25rem;">ይቅር (Cancel)</button>
+          <button type="button" id="replace-modal-save-btn" class="btn-primary" style="padding:0.6rem 1.75rem; font-weight:800;">💾 ምስሉን ቀይርና አስቀምጥ (Save / Replace Image)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/image-upload.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/admin-auth.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/image-management.js"></script>
+</body>
+</html>

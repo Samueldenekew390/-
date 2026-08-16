@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>የክፍያ መመሪያ - የኢትዮጲያ ሎተሪ እጣ</title>
+  <meta name="description" content="የክፍያ መመሪያ እና ማረጋገጫ የኢትዮጲያ ሎተሪ እጣ" />
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0A0A0A" />
+</head>
+<body>
+
+  <!-- SITE HEADER -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="index.html" class="brand-logo-container">
+        <img src="/assets/official_logo.jpg" alt="የኢትዮጲያ ሎተሪ እጣ" class="brand-logo-img" />
+        <span class="brand-title">የኢትዮጲያ ሎተሪ እጣ</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">መነሻ</a></li>
+        <li><a href="category.html?category=car" class="nav-link">መኪና</a></li>
+        <li><a href="category.html?category=condo" class="nav-link">ኮንደሚኒዬም</a></li>
+        <li><a href="category.html?category=phone" class="nav-link">ዘመናዊ ስልኮች</a></li>
+        <li><a href="category.html?category=money" class="nav-link">ገንዘብ</a></li>
+        <li><a href="category.html?category=laptop" class="nav-link">ላፕቶፕ</a></li>
+        <li><a href="category.html?category=tv" class="nav-link">ቴሌቪዥን</a></li>
+        <li><a href="category.html?category=sheep" class="nav-link">በግ</a></li>
+        <li><a href="admin-login.html" class="nav-link" id="admin-nav-login-link-pay" style="color: var(--primary); font-weight:800; border:1px solid var(--primary); padding:0.4rem 0.8rem; border-radius:6px; background:rgba(212,175,55,0.1);">⚙️ አስተዳዳሪ መግቢያ</a></li>
+      </ul>
+
+      <button class="mobile-toggle" id="mobile-nav-toggle" aria-label="ሜኑ">☰</button>
+    </div>
+  </header>
+
+  <!-- MOBILE NAVIGATION DRAWER -->
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay">
+    <div class="mobile-nav-drawer">
+      <div class="mobile-nav-header">
+        <div class="brand-logo-container">
+          <span class="brand-title">የኢትዮጲያ ሎተሪ እጣ</span>
+        </div>
+        <button id="mobile-nav-close" style="font-size: 1.5rem; color: var(--text);">✕</button>
+      </div>
+      <ul class="mobile-nav-list">
+        <li><a href="index.html" class="nav-link">መነሻ</a></li>
+        <li><a href="category.html?category=car" class="nav-link">🚗 መኪና</a></li>
+        <li><a href="category.html?category=condo" class="nav-link">🏠 ኮንደሚኒዬም</a></li>
+        <li><a href="category.html?category=phone" class="nav-link">📱 ዘመናዊ ስልኮች</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PAYMENT SECTION -->
+  <section style="padding: 3rem 0;">
+    <div class="container" style="max-width: 720px;">
+      
+      <div class="payment-card" style="background: var(--surface-card); border: 1px solid var(--border-gold); border-radius: var(--radius-lg); padding: 2.5rem 2rem; box-shadow: var(--shadow-card);">
+        
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <span class="gold-badge" style="margin-bottom: 0.75rem;">ደረጃ 2 ከ 2</span>
+          <h1 style="font-size: 2.1rem; font-weight: 800; color: var(--text);">የክፍያ መመሪያ</h1>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.35rem;">
+            እባክዎ ከታች ከተዘረዘሩት የባንክ አካውንቶች በአንዱ ክፍያ ፈጽመው የክፍያ ማረጋገጫውን ያስገቡ
+          </p>
+        </div>
+
+        <!-- SELECTED PRIZE SUMMARY CARD -->
+        <div id="selected-prize-summary" style="margin-bottom: 2rem;"></div>
+
+        <!-- PAYMENT FORM -->
+        <form id="payment-form">
+          
+          <div class="form-group">
+            <label class="form-label" style="font-weight: 700; color: var(--primary);">
+              1. የክፍያ አማራጭ ይምረጡ (የአካውንት ቁጥሩን ለመቅዳት 📋 ቅዳ የሚለውን ይጫኑ)
+            </label>
+            <div id="bank-accounts-container" style="margin-top: 0.5rem;">
+              <!-- Dynamic Bank Account Rows -->
+            </div>
+          </div>
+
+          <!-- PHONE NUMBER INPUT -->
+          <div class="form-group" style="margin-top: 1.75rem;">
+            <label for="customer-phone-input" class="form-label" style="font-weight: 700; color: var(--text);">
+              2. ስልክ ቁጥር <span style="color: var(--accent-red);">*</span>
+            </label>
+            <input 
+              type="tel" 
+              id="customer-phone-input" 
+              class="form-control" 
+              placeholder="ስልክ ቁጥርዎን ያስገቡ" 
+              required 
+              style="font-family: var(--font-numeric); font-size: 1.1rem; padding: 0.9rem 1.25rem;"
+            />
+            <span style="font-size: 0.8rem; color: var(--text-dim);">ምሳሌ፡ 0912345678 ወይም 0712345678</span>
+          </div>
+
+          <!-- PRIVATE SCREENSHOT UPLOADER -->
+          <div class="form-group" style="margin-top: 1.75rem;">
+            <label class="form-label" style="font-weight: 700; color: var(--text);">
+              3. የክፍያ ምስል አስገባ <span style="color: var(--accent-red);">*</span>
+            </label>
+
+            <div id="screenshot-dropzone" style="
+              border: 2px dashed var(--border-gold);
+              background: var(--surface);
+              border-radius: var(--radius-md);
+              padding: 2rem 1.5rem;
+              text-align: center;
+              cursor: pointer;
+              transition: border-color 0.2s;
+            " onclick="document.getElementById('screenshot-file-input').click()">
+              <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📸</div>
+              <p style="font-weight: 700; color: var(--text); margin-bottom: 0.25rem;">
+                የክፍያ ደረሰኝ ምስል ይምረጡ ወይም እዚህ ይጎትቱ
+              </p>
+              <p style="font-size: 0.85rem; color: var(--text-dim);">
+                ተቀባይነት ያላቸው፡ JPG, PNG, WEBP (ከ 10MB ያልበለጠ)
+              </p>
+              <input type="file" id="screenshot-file-input" accept="image/jpeg,image/png,image/webp" style="display: none;" />
+            </div>
+
+            <!-- Image Preview Box -->
+            <div id="screenshot-preview-container"></div>
+          </div>
+
+          <!-- SUBMIT BUTTON -->
+          <div style="margin-top: 2.5rem;">
+            <button type="submit" id="submit-payment-btn" class="btn-primary" style="width: 100%; padding: 1.1rem; font-size: 1.2rem; justify-content: center;">
+              አስገባ 🚀
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <span id="footer-legal-info">መብቱ በህግ የተጠበቀ ነው። © 2026 የኢትዮጲያ ሎተሪ እጣ</span>
+        <span>የኢትዮጲያ ሎተሪ እጣ</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/payment.js"></script>
+</body>
+</html>
