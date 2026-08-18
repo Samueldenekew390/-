@@ -2,7 +2,7 @@
    የኢትዮጲያ ሎተሪ እጣ - PWA Service Worker
    ========================================================================== */
 
-const CACHE_NAME = 'eth-lottery-v2';
+const CACHE_NAME = 'eth-lottery-v3';
 
 // Static safe public shell assets to pre-cache
 const STATIC_ASSETS = [
@@ -72,14 +72,24 @@ self.addEventListener('fetch', (e) => {
     return; // Bypass Service Worker cache for sensitive requests
   }
 
-  e.respondWith(
-    caches.match(e.request).then((cachedResponse) => {
-      if (cachedResponse) return cachedResponse;
-      return fetch(e.request).catch(() => {
-        return new Response('', { status: 404, statusText: 'Not found in cache or network' });
-      });
-    }).catch(() => {
-      return new Response('', { status: 404, statusText: 'Error' });
-    })
-  );
-});
+e.respondWith(
+  caches.match(e.request).then((cachedResponse) => {
+    if (cachedResponse) return cachedResponse;
+
+    // Build a new request that forces redirect handling
+    const fetchRequest = new Request(e.request.url, {
+      method: e.request.method,
+      headers: e.request.headers,
+      mode: 'same-origin',
+      credentials: e.request.credentials,
+      redirect: 'follow'   // <-- the key fix
+    });
+
+    return fetch(fetchRequest).catch(() => {
+      return new Response('', { status: 404, statusText: 'Not found in cache or network' });
+    });
+  }).catch(() => {
+    return new Response('', { status: 404, statusText: 'Error' });
+  })
+);
+});  
