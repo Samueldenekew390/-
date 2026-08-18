@@ -23,8 +23,9 @@ const STATIC_ASSETS = [
   '/manifest.json'
 ];
 
-self.addEventListener('install', (e) => {
-  e.waitUntil(
+// Install event: pre-cache static assets
+self.addEventListener('install', (event) => {
+  event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(STATIC_ASSETS);
     }).catch((err) => {
@@ -34,8 +35,9 @@ self.addEventListener('install', (e) => {
   self.skipWaiting();
 });
 
-self.addEventListener('activate', (e) => {
-  e.waitUntil(
+// Activate event: clear old caches
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
@@ -47,49 +49,48 @@ self.addEventListener('activate', (e) => {
   self.clients.claim();
 });
 
-self.addEventListener('fetch', (e) => {
-  if (e.request.method !== 'GET') return;
-
+// Fetch event: cache-first strategy with redirect handling
+self.addEventListener('fetch', (event) => {
   let url;
   try {
-    url = new URL(e.request.url);
+    url = new URL(event.request.url);
   } catch (err) {
     return;
   }
 
-  // Only handle same-origin requests to prevent breaking external APIs, CDNs, or image hosts
+  // Only handle same-origin requests
   if (url.origin !== self.location.origin) {
     return;
   }
 
   // STRICT PRIVACY RULE:
-  // DO NOT CACHE: admin pages, payment screenshots, Supabase API calls, customer inputs
+  // Do not cache admin pages, payment screenshots, Supabase API calls
   if (
     url.pathname.includes('admin') ||
     url.pathname.includes('screenshot') ||
     url.pathname.includes('supabase')
   ) {
-    return; // Bypass Service Worker cache for sensitive requests
+    return; // Skip caching for sensitive requests
   }
 
-e.respondWith(
-  caches.match(e.request).then((cachedResponse) => {
-    if (cachedResponse) return cachedResponse;
+  event.respondWith(
+    caches.match(event.request).then((cachedResponse) => {
+      if (cachedResponse) return cachedResponse;
 
-    // Build a new request that forces redirect handling
-    const fetchRequest = new Request(e.request.url, {
-      method: e.request.method,
-      headers: e.request.headers,
-      mode: 'same-origin',
-      credentials: e.request.credentials,
-      redirect: 'follow'   // <-- the key fix
-    });
+      // Build a new request that forces redirect handling
+      const fetchRequest = new Request(event.request.url, {
+        method: event.request.method,
+        headers: event.request.headers,
+        mode: 'same-origin',
+        credentials: event.request.credentials,
+        redirect: 'follow'   // <-- key fix
+      });
 
-    return fetch(fetchRequest).catch(() => {
-      return new Response('', { status: 404, statusText: 'Not found in cache or network' });
-    });
-  }).catch(() => {
-    return new Response('', { status: 404, statusText: 'Error' });
-  })
-);
-});  
+      return fetch(fetchRequest).catch(() => {
+        return new Response('', { status: 404, statusText: 'Not found in cache or network' });
+      });
+    }).catch(() => {
+      return new Response('', { status: 404, statusText: 'Error' });
+    })
+  );
+});
