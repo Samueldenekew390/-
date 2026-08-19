@@ -30,11 +30,7 @@ const APP_CONFIG = {
 
   SEED_PAYMENT_METHODS: [
     { id: 'pay-cbe', name_am: 'ንግድ ባንክ', account_number: '1000327468956', active: true, display_order: 1 },
-    { id: 'pay-telebirr', name_am: 'ቴሌብር', account_number: '0964202064', active: true, display_order: 2 },
-    { id: 'pay-abyssinia', name_am: 'አቢሲኒያ ባንክ', account_number: '1000327468956', active: true, display_order: 3 },
-    { id: 'pay-dashen', name_am: 'ዳሽን ባንክ', account_number: '1000327468956', active: true, display_order: 4 },
-    { id: 'pay-amhara', name_am: 'አማራ ባንክ', account_number: '1000327468956', active: true, display_order: 5 },
-    { id: 'pay-oromia', name_am: 'ኦሮሚያ ባንክ', account_number: '1000327468956', active: true, display_order: 6 }
+    { id: 'pay-abyssinia', name_am: 'አቢሲኒያ ባንክ', account_number: '264416817', active: true, display_order: 3 }
   ],
 
   DEFAULT_SITE_SETTINGS: {
