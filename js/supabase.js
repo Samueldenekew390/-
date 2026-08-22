@@ -988,9 +988,6 @@ class DatabaseService {
 
   // --- HOMEPAGE IMAGES API ---
   async getHomepageImages() {
-    const local = JSON.parse(localStorage.getItem('eth_lottery_homepage_images') || '[]');
-    if (local && local.length > 0) return local;
-
     if (this.isSupabaseConnected) {
       try {
         const { data, error } = await this.supabase
@@ -1002,9 +999,9 @@ class DatabaseService {
         console.warn('Supabase fetch homepage images failed:', e);
       }
     }
+    const local = JSON.parse(localStorage.getItem('eth_lottery_homepage_images') || '[]');
     return local;
   }
-
   async saveHomepageImage(imgObj) {
     if (this.isSupabaseConnected) {
       try {
