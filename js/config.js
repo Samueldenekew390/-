@@ -10,12 +10,12 @@ const APP_CONFIG = {
   // Supabase Configuration
   // Fill these in js/config.js or via Admin Settings to connect real Supabase.
   // If empty, the app seamlessly runs in Local Storage Demo Mode!
-  SUPABASE_URL: window.ENV_SUPABASE_URL || '',
-  SUPABASE_ANON_KEY: window.ENV_SUPABASE_ANON_KEY || '',
+  SUPABASE_URL: window.ENV_SUPABASE_URL || 'https://tcbnlvqdvopkskwnjsmv.supabase.co',
+  SUPABASE_ANON_KEY: window.ENV_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRjYm5sdnFkdm9wa3Nrd25qc212Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3OTIxMjIsImV4cCI6MjEwMjM2ODEyMn0.kBgVI697FnPCtQqGjQvvMFEhgsNW533Y4_JepBEoPww',
 
   // ImageBB Configuration for Public Prize Images
   // Securely configured or set in Admin Settings.
-  IMAGEBB_API_KEY: window.ENV_IMAGEBB_API_KEY || '',
+  IMAGEBB_API_KEY: window.ENV_IMAGEBB_API_KEY || '0119de4d7242b969d4cb6b90c18f8e11',
 
   // Initial Seed Data (Used for Demo Mode or First-Time Supabase Seed)
   SEED_CATEGORIES: [
