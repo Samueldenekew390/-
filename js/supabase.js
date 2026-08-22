@@ -1002,7 +1002,7 @@ class DatabaseService {
     const local = JSON.parse(localStorage.getItem('eth_lottery_homepage_images') || '[]');
     return local;
   }
-  async saveHomepageImage(imgObj) {
+   async saveHomepageImage(imgObj) {
     if (this.isSupabaseConnected) {
       try {
         await this.supabase.from('homepage_images').upsert([imgObj]);
@@ -1010,14 +1010,21 @@ class DatabaseService {
         console.warn('Supabase save homepage image failed:', e);
       }
     }
-    const list = JSON.parse(localStorage.getItem('eth_lottery_homepage_images') || '[]');
-    const idx = list.findIndex(i => i.id === imgObj.id);
-    if (idx >= 0) list[idx] = imgObj;
-    else list.unshift(imgObj);
-    localStorage.setItem('eth_lottery_homepage_images', JSON.stringify(list));
+    // Best-effort local backup only - Supabase (when connected) is the real source of
+    // truth for this data. Wrapped in try/catch and capped to a few recent entries so
+    // it can never throw a "quota exceeded" error and break an otherwise-successful save.
+    try {
+      const list = JSON.parse(localStorage.getItem('eth_lottery_homepage_images') || '[]');
+      const idx = list.findIndex(i => i.id === imgObj.id);
+      if (idx >= 0) list[idx] = imgObj;
+      else list.unshift(imgObj);
+      localStorage.setItem('eth_lottery_homepage_images', JSON.stringify(list.slice(0, 8)));
+    } catch (e) {
+      console.warn('Local homepage image cache write skipped (non-fatal):', e);
+      try { localStorage.removeItem('eth_lottery_homepage_images'); } catch (_) {}
+    }
     return true;
   }
-
   async deleteHomepageImage(imgId) {
     if (this.isSupabaseConnected) {
       try {
@@ -1026,12 +1033,15 @@ class DatabaseService {
         console.warn('Supabase delete homepage image failed:', e);
       }
     }
-    let list = JSON.parse(localStorage.getItem('eth_lottery_homepage_images') || '[]');
-    list = list.filter(i => i.id !== imgId);
-    localStorage.setItem('eth_lottery_homepage_images', JSON.stringify(list));
+    try {
+      let list = JSON.parse(localStorage.getItem('eth_lottery_homepage_images') || '[]');
+      list = list.filter(i => i.id !== imgId);
+      localStorage.setItem('eth_lottery_homepage_images', JSON.stringify(list));
+    } catch (e) {
+      console.warn('Local homepage image cache cleanup skipped (non-fatal):', e);
+    }
     return true;
   }
-
   async savePaymentMethod(method) {
     if (this.isSupabaseConnected) {
       try {
