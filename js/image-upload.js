@@ -32,6 +32,86 @@ const ImageUploadService = {
     return { valid: true };
   },
 
+  // Resize/compress large images (e.g. mobile camera photos) client-side before upload.
+  // Mobile photos are often 4-10MB+, which blows past the server upload endpoint's
+  // request size limit and can also overflow localStorage's fallback quota. Downscaling
+  // here keeps the payload small and reliable on every device without any visible
+  // quality loss for a web banner/thumbnail image.
+  //
+  // Returns { file, dataUrl }. dataUrl is populated when compression ran (read
+  // straight off the canvas, avoiding a Blob->File->FileReader round trip that can
+  // intermittently fail on some mobile browsers). When no compression was needed,
+  // dataUrl is null and the caller falls back to the normal FileReader path.
+  compressImageFile(file, maxDimension = 1600, quality = 0.82) {
+    return new Promise((resolve) => {
+      // Skip resizing for already-small files or non-raster types we shouldn't touch
+      if (!file || file.size <= 700 * 1024) {
+        resolve({ file, dataUrl: null });
+        return;
+      }
+
+      const img = new Image();
+      const objectUrl = URL.createObjectURL(file);
+
+      const cleanupAndResolveOriginal = () => {
+        URL.revokeObjectURL(objectUrl);
+        resolve({ file, dataUrl: null });
+      };
+
+      img.onload = () => {
+        try {
+          let { width, height } = img;
+          if (width > maxDimension || height > maxDimension) {
+            if (width >= height) {
+              height = Math.round((height * maxDimension) / width);
+              width = maxDimension;
+            } else {
+              width = Math.round((width * maxDimension) / height);
+              height = maxDimension;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          const outputType = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+          const dataUrl = canvas.toDataURL(outputType, quality);
+          URL.revokeObjectURL(objectUrl);
+
+          // Rough size check on the data URL (base64 is ~4/3 of raw bytes)
+          const approxCompressedBytes = Math.round((dataUrl.length * 3) / 4);
+          if (approxCompressedBytes >= file.size) {
+            // Compression didn't help - keep the original file/path
+            resolve({ file, dataUrl: null });
+            return;
+          }
+
+          // Also derive a Blob/File for the direct-upload (FormData) fallback path
+          canvas.toBlob((blob) => {
+            if (!blob) {
+              resolve({ file, dataUrl });
+              return;
+            }
+            const compressedFile = new File(
+              [blob],
+              file.name || 'upload.jpg',
+              { type: outputType }
+            );
+            resolve({ file: compressedFile, dataUrl });
+          }, outputType, quality);
+        } catch (e) {
+          cleanupAndResolveOriginal();
+        }
+      };
+
+      img.onerror = cleanupAndResolveOriginal;
+      img.src = objectUrl;
+    });
+  },
+
   // Upload Public Prize/Category Image to ImageBB
   async uploadToImageBB(file, apiKey = '') {
     // 1. Validate File
@@ -40,7 +120,11 @@ const ImageUploadService = {
       throw new Error(validation.message);
     }
 
-    const base64 = await Utils.readFileAsDataURL(file);
+    // 1b. Downscale large photos (mainly mobile camera uploads) before encoding
+    const { file: processedFile, dataUrl: compressedDataUrl } = await this.compressImageFile(file);
+    file = processedFile;
+
+    const base64 = compressedDataUrl || await Utils.readFileAsDataURL(file);
 
     // 2. Try Secure Server Endpoint first
     try {
@@ -105,4 +189,3 @@ const ImageUploadService = {
 };
 
 window.ImageUploadService = ImageUploadService;
-
