@@ -174,8 +174,9 @@ img {
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-gold);
   transition: background var(--transition-normal);
+  transform: translateZ(0);
+  will-change: transform;
 }
-
 .navbar {
   display: flex;
   align-items: center;
